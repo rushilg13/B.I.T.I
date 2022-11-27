@@ -1,6 +1,5 @@
-# B.I.T.I
-B.I.T.I - Bag It, Tag It
+# B.I.T.I - Bag It, Tag It
 
-
-#ERD link
+ERD Diagram
+------
 [Link to ERD](https://app.creately.com/d/8cRDfNW4iAN/view)
