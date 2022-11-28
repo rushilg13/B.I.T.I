@@ -43,15 +43,15 @@ module.exports = mongoose.model('Customer', customerSchema);
 
 const orderSchema = new Schema({
     orderID: mongoose.Schema.Types.ObjectId,
-    dateOfOrder: date,
-    dueDate: date,
-    deliveredDate: {type: date, default: null},
+    dateOfOrder: Date,
+    dueDate: Date,
+    deliveredDate: {type: Date, default: null},
     orderType: String,
     paymentMethod: String,
     payableAmount: Number,
     status: String,
     updates: String,
-    updatedOn: {type: date, default: null},
+    updatedOn: {type: Date, default: null},
     additionalNotes: String,
     shopID: { type: mongoose.Schema.Types.ObjectId, ref:"Shop"},
     profileID: { type: mongoose.Schema.Types.ObjectId, ref:"Customer"}
