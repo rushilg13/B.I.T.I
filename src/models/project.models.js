@@ -10,6 +10,7 @@ const shopSchema = new Schema({
     reviews: [{ body: String, date: Date, negpos: String }],
     phone: String,
     address: String,
+    password: String,
     categories: [{type: String}]
 });
 
