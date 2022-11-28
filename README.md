@@ -2,4 +2,9 @@
 
 ERD Diagram
 ------
+![ER Diagram](ERD.jpg)
 [Link to ERD](https://app.creately.com/d/8cRDfNW4iAN/view)
+
+Relational Schema
+------
+![Relational Schema](Relational_Schema.png)
