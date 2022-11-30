@@ -130,6 +130,10 @@ body {
     padding-left: 60px;
 }
 
+.form-group select{
+    padding-left: 60px;
+}
+
 .form-control {
     border: 1px solid #e1e1e1;
     -webkit-box-shadow: none;

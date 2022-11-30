@@ -37,6 +37,22 @@
 
 </head>
 
+<style>
+@media (min-width: 768px) {
+    .login-box .form-wrap {
+        padding: 5px;
+    }
+}
+
+@media (min-width: 992px) {
+    .login-box .form-wrap {
+        margin-top: -40px;
+        margin-bottom: -40px;
+        padding: 40px;
+    }
+}
+</style>
+
 <body>
 
     <div class="container">
@@ -46,14 +62,14 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col-md-6">
                             <div class="form-wrap bg-white">
-                                <h4 class="btm-sep pb-3 mb-5" style="text-align: center;">Business Signup</h4>
-                                <form class="form" method="post" action="/business_home">
+                                <h4 class="btm-sep pb-1 mb-1" style="text-align: center;">Business Signup</h4>
+                                <form class="form" method="post" action="/business_home_signup">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group position-relative">
                                                 <span class="zmdi zmdi-face"></span>
                                                 <input type="text" id="name" class="form-control" name="name"
-                                                    placeholder="Business Name">
+                                                    placeholder="Business Name" required>
                                             </div>
                                         </div>
                                         <br><br>
@@ -61,15 +77,15 @@
                                             <div class="form-group position-relative">
                                                 <span class="zmdi zmdi-account"></span>
                                                 <input type="email" id="email" class="form-control" name="email"
-                                                    placeholder="Email Address">
+                                                    placeholder="Email Address" required>
                                             </div>
                                         </div>
                                         <br><br>
                                         <div class="col-12">
                                             <div class="form-group position-relative">
-                                                <span class="zmdi zmdi-email"></span>
-                                                <input type="password" id="password" class="form-control" name="password"
-                                                    placeholder="Password"> 
+                                                <span class="zmdi zmdi-lock"></span>
+                                                <input type="password" id="password" class="form-control"
+                                                    name="password" placeholder="Password" required minlength="8">
                                             </div>
                                         </div>
                                         <br><br>
@@ -77,18 +93,41 @@
                                             <div class="form-group position-relative">
                                                 <span class="zmdi zmdi-phone"></span>
                                                 <input type="tel" id="phone" class="form-control" name="phone"
-                                                    placeholder="Phone Number">
+                                                    placeholder="Phone Number" required maxlength="10" minlength="10">
                                             </div>
                                         </div>
                                         <br><br>
                                         <div class="col-12">
                                             <div class="form-group position-relative">
                                                 <span class="zmdi zmdi-home"></span>
-                                                <textarea id="address" class="form-control" row="4" cols="50" name="address"
-                                                    placeholder="Address"></textarea>
+                                                <textarea id="address" class="form-control" row="4" cols="50"
+                                                    name="address" placeholder="Address" required></textarea>
                                             </div>
                                         </div>
-                                        <br><br>
+                                        <br><br><br>
+                                        <div class="col-12">
+                                            <div class="form-group position-relative">
+                                                <span class="zmdi zmdi-apps"></span>
+                                                <select size="3" class="form-control" name="categories" id="categories" multiple required>
+                                                    <option value="Books" selected>Books</option>
+                                                    <option value="Car & Automobiles">Car & Automobiles</option>
+                                                    <option value="Clothing & Accessories">Clothing & Accessories</option>
+                                                    <option value="Electronics">Electronics</option>
+                                                    <option value="Grocery & Gourmet">Grocery & Gourmet</option>
+                                                    <option value="Health & Personal Care">Health & Personal Care</option>
+                                                    <option value="Home & Kitchen">Home & Kitchen</option>
+                                                    <option value="Jewellery">Jewellery</option>
+                                                    <option value="Musical Instruments">Musical Instruments</option>
+                                                    <option value="Office Product">Office Product</option>
+                                                    <option value="Shoes & Handbag">Shoes & Handbag</option>
+                                                    <option value="Sports & Fitness">Sports & Fitness</option>
+                                                    <option value="Toys & Games">Toys & Games</option>
+                                                    <option value="Watches">Watches</option>
+                                                </select>
+                                            </div>
+                                            <p style="text-align: center;;">*Select multiple by holding cmd/ctrl key</p>
+                                        </div>
+                                        <br><br><br><br>
                                         <div class="col-12 mt-30">
                                             <input type="submit" style="margin: 0 auto; display: block;" id="submit"
                                                 class="btn btn-lg btn-custom btn-dark btn-block" value="Sign Up">

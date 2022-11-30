@@ -45,19 +45,19 @@
                         <div class="col-md-6">
                             <div class="form-wrap bg-white">
                                 <h4 class="btm-sep pb-3 mb-5" style="text-align: center;">Business Login</h4>
-                                <form class="form" method="post" action="#">
+                                <form class="form" method="post" action="/business_home_login">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group position-relative">
                                                 <span class="zmdi zmdi-account"></span>
-                                                <input type="email" id="email" class="form-control" placeholder="Email Address">
+                                                <input type="email" name="email" id="email" class="form-control" placeholder="Email Address">
                                             </div>
                                         </div>
                                         <br><br>
                                         <div class="col-12">
                                             <div class="form-group position-relative">
                                                 <span class="zmdi zmdi-email"></span>
-                                                <input type="password" id="password" class="form-control" placeholder="Password">
+                                                <input type="password" name="password" id="password" class="form-control" placeholder="Password">
                                             </div>
                                         </div>
                                         <br>
@@ -65,8 +65,8 @@
                                             <a href="#" class="c-black">Forgot password ?</a>
                                         </div>
                                         <div class="col-12 mt-30">
-                                            <button type="submit" style="margin: 0 auto; display: block;" id="submit" class="btn btn-lg btn-custom btn-dark btn-block">Sign In
-                                            </button>
+                                            <input type="submit" style="margin: 0 auto; display: block;" id="submit"
+                                                class="btn btn-lg btn-custom btn-dark btn-block" value="Sign In">
                                         </div>
                                     </div>
                                 </form>
