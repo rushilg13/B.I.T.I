@@ -8,15 +8,19 @@ exports.homepage = function (req, res) {
 }
 
 exports.business_signuppage = function (req, res) {
+    let session = req.session;
+    if (session.email)
+        res.send({ email: session.email }); // fix me. redirect to protected business home page
+    else
     res.sendFile(path.join(__dirname, "../views", "business_signup.html"));
 }
 
 exports.business_home = function (req, res) {
     let session = req.session;
     if (session.email)
-        res.send({ email: session.email });
+        res.send({ email: session.email }); // fix me. redirect to protected business home page
     else
-        res.send("not logged in");
+        res.redirect('/business_signup');
 }
 
 exports.business_home_signup = function (req, res) {
@@ -26,7 +30,7 @@ exports.business_home_signup = function (req, res) {
         phone: req.body.phone,
         address: req.body.address,
         password: req.body.password,
-        categories: req.body.categories // fix me
+        categories: req.body.categories
     });
 
     shop_db.findOne({ email: req.body.email }, function (err, user) {
@@ -87,6 +91,10 @@ exports.business_home_login = function (req, res) {
 }
 
 exports.business_loginpage = function (req, res) {
+    let session = req.session;
+    if (session.email)
+        res.send({ email: session.email }); // Fix me
+    else
     res.sendFile(path.join(__dirname, "../views", "business_login.html"));
 }
 
