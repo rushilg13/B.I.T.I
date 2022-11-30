@@ -4,23 +4,22 @@ const order_db = require('../models/project.order');
 const shop_db = require('../models/project.shop');
 
 exports.homepage = function (req, res) {
-    res.sendFile(path.join(__dirname, "../views", "index.html"));
+    res.render('index');
 }
 
 exports.business_signuppage = function (req, res) {
     let session = req.session;
     if (session.email)
-        res.sendFile(path.join(__dirname, "../views", "business_home.html"));
-        // res.send({ email: session.email }); // fix me. redirect to protected business home page
+        res.render("business_home");        // res.send({ email: session.email }); // fix me. redirect to protected business home page
     else
-    res.sendFile(path.join(__dirname, "../views", "business_signup.html"));
+        res.render("business_signup");
 }
 
 exports.business_home = function (req, res) {
     let session = req.session;
     if (session.email)
-        res.sendFile(path.join(__dirname, "../views", "business_home.html"));
-        // res.send({ email: session.email }); // fix me. redirect to protected business home page
+        res.render("business_home");
+    // res.send({ email: session.email }); // fix me. redirect to protected business home page
     else
         res.redirect('/business_signup');
 }
@@ -73,7 +72,6 @@ exports.business_home_login = function (req, res) {
             if (user.password === req.body.password) {
                 let session = req.session;
                 session.email = req.body.email;
-                console.log(req.session);
                 res.redirect('/business_home')
             }
             else {
@@ -95,18 +93,17 @@ exports.business_home_login = function (req, res) {
 exports.business_loginpage = function (req, res) {
     let session = req.session;
     if (session.email)
-        res.sendFile(path.join(__dirname, "../views", "business_home.html"));
-        // res.send({ email: session.email }); // Fix me
+        res.render("business_home");    // res.send({ email: session.email }); // Fix me
     else
-    res.sendFile(path.join(__dirname, "../views", "business_login.html"));
+    res.render("business_login");
 }
 
 exports.customer_signuppage = function (req, res) {
-    res.sendFile(path.join(__dirname, "../views", "customer_signup.html"));
+    res.render("customer_signup");
 }
 
 exports.customer_loginpage = function (req, res) {
-    res.sendFile(path.join(__dirname, "../views", "customer_login.html"));
+    res.render("customer_login");
 }
 
 exports.logout = function (req, res) {
