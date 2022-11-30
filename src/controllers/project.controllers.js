@@ -10,7 +10,8 @@ exports.homepage = function (req, res) {
 exports.business_signuppage = function (req, res) {
     let session = req.session;
     if (session.email)
-        res.send({ email: session.email }); // fix me. redirect to protected business home page
+        res.sendFile(path.join(__dirname, "../views", "business_home.html"));
+        // res.send({ email: session.email }); // fix me. redirect to protected business home page
     else
     res.sendFile(path.join(__dirname, "../views", "business_signup.html"));
 }
@@ -18,7 +19,8 @@ exports.business_signuppage = function (req, res) {
 exports.business_home = function (req, res) {
     let session = req.session;
     if (session.email)
-        res.send({ email: session.email }); // fix me. redirect to protected business home page
+        res.sendFile(path.join(__dirname, "../views", "business_home.html"));
+        // res.send({ email: session.email }); // fix me. redirect to protected business home page
     else
         res.redirect('/business_signup');
 }
@@ -93,7 +95,8 @@ exports.business_home_login = function (req, res) {
 exports.business_loginpage = function (req, res) {
     let session = req.session;
     if (session.email)
-        res.send({ email: session.email }); // Fix me
+        res.sendFile(path.join(__dirname, "../views", "business_home.html"));
+        // res.send({ email: session.email }); // Fix me
     else
     res.sendFile(path.join(__dirname, "../views", "business_login.html"));
 }
