@@ -29,10 +29,12 @@ db.once("open", function() {
 const project = require('./routes/project.routes');
 const app = express();
 
+const oneDay = 1000 * 60 * 60 * 24;
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: { maxAge: oneDay }
 }));
 
 

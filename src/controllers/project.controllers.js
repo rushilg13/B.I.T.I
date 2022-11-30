@@ -12,7 +12,11 @@ exports.business_signuppage = function (req, res) {
 }
 
 exports.business_home = function (req, res) {
-    res.send("home");
+    let session = req.session;
+    if (session.email)
+        res.send({ email: session.email });
+    else
+        res.send("not logged in");
 }
 
 exports.business_home_signup = function (req, res) {
@@ -43,6 +47,8 @@ exports.business_home_signup = function (req, res) {
                 if (err) {
                     return (err);
                 }
+                let session = req.session;
+                session.email = req.body.email;
                 res.redirect('/business_home')
             })
         }
@@ -59,6 +65,9 @@ exports.business_home_login = function (req, res) {
         //if a user was found, that means the user's email matches the entered email
         if (user) {
             if (user.password === req.body.password) {
+                let session = req.session;
+                session.email = req.body.email;
+                console.log(req.session);
                 res.redirect('/business_home')
             }
             else {
@@ -87,4 +96,9 @@ exports.customer_signuppage = function (req, res) {
 
 exports.customer_loginpage = function (req, res) {
     res.sendFile(path.join(__dirname, "../views", "customer_login.html"));
+}
+
+exports.logout = function (req, res) {
+    req.session.destroy();
+    res.redirect('/');
 }

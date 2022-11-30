@@ -35,18 +35,6 @@ router.get("/business_login", project_controller.business_loginpage);
 router.get("/customer_signup", project_controller.customer_signuppage);
 router.get("/customer_login", project_controller.customer_loginpage);
 
-router.get('/logout', (req, res) => {
-    if (req.session) {
-        req.session.destroy(err => {
-            if (err) {
-                res.status(400).send('Unable to log out')
-            } else {
-                res.send('Logout successful')
-            }
-        });
-    } else {
-        res.end()
-    }
-})
+router.get('/logout', project_controller.logout);
 
 module.exports = router;
