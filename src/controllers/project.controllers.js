@@ -10,7 +10,7 @@ exports.homepage = function (req, res) {
 exports.business_signuppage = function (req, res) {
     let session = req.session;
     if (session.email)
-        res.render("business_home");        // res.send({ email: session.email }); // fix me. redirect to protected business home page
+        res.redirect("/business_home");        // res.send({ email: session.email }); // fix me. redirect to protected business home page
     else
         res.render("business_signup");
 }
@@ -107,9 +107,32 @@ exports.business_home_login = function (req, res) {
 exports.business_loginpage = function (req, res) {
     let session = req.session;
     if (session.email)
-        res.render("business_home");    // res.send({ email: session.email }); // Fix me
+        res.redirect("/business_home");    // res.send({ email: session.email }); // Fix me
     else
         res.render("business_login");
+}
+
+exports.myorders = function (req, res) {
+    let session = req.session;
+    if (session.email) {
+        shop_db.findOne({ email: session.email }, function (err, user) {
+            if (err) {
+                //handle error here
+                console.error(err);
+            }
+
+            //if a user was found, that means the user's email matches the session email
+            if (user) {
+                res.render("myorders", {user});
+            } else {
+                //code if no user with session email was found
+                    res.redirect('/logout');
+                };
+            })
+        }
+    // res.send({ email: session.email }); // fix me. redirect to protected business home page
+    else
+        res.redirect('/business_signup');
 }
 
 exports.customer_signuppage = function (req, res) {

@@ -11,6 +11,7 @@ router.get("/business_signup", project_controller.business_signuppage);
 router.post("/business_home_signup", project_controller.business_home_signup);
 router.post("/business_home_login", project_controller.business_home_login);
 router.get("/business_home", project_controller.business_home);
+router.get("/myorders", project_controller.myorders);
 
 
 router.get('/google', passport.authenticate('google', {
