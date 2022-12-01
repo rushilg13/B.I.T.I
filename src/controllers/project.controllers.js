@@ -112,10 +112,10 @@ exports.business_loginpage = function (req, res) {
         res.render("business_login");
 }
 
-exports.myorders = function (req, res) {
+exports.myorders = async function (req, res) {
     let session = req.session;
     if (session.email) {
-        shop_db.findOne({ email: session.email }, function (err, user) {
+        shop_db.findOne({ email: session.email }, async function (err, user) {
             if (err) {
                 //handle error here
                 console.error(err);
@@ -123,7 +123,9 @@ exports.myorders = function (req, res) {
 
             //if a user was found, that means the user's email matches the session email
             if (user) {
-                res.render("myorders", { user });
+                let business_id = await shop_db.findOne({ email: session.email }).exec();
+                let orders = await order_db.find({ shopID: business_id }).exec();
+                res.render("myorders", { user, orders });
             } else {
                 //code if no user with session email was found
                 res.redirect('/logout');
