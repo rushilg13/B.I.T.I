@@ -8,3 +8,5 @@ ERD Diagram
 Relational Schema
 ------
 ![Relational Schema](Relational_Schema.png)
+
+https://github.com/startbootstrap/startbootstrap-sb-admin-2
