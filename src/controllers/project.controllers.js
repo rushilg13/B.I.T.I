@@ -17,8 +17,22 @@ exports.business_signuppage = function (req, res) {
 
 exports.business_home = function (req, res) {
     let session = req.session;
-    if (session.email)
-        res.render("business_home");
+    if (session.email) {
+        shop_db.findOne({ email: session.email }, function (err, user) {
+            if (err) {
+                //handle error here
+                console.error(err);
+            }
+
+            //if a user was found, that means the user's email matches the session email
+            if (user) {
+                res.render("business_home", {user});
+            } else {
+                //code if no user with session email was found
+                    res.redirect('/logout');
+                };
+            })
+        }
     // res.send({ email: session.email }); // fix me. redirect to protected business home page
     else
         res.redirect('/business_signup');
@@ -95,7 +109,7 @@ exports.business_loginpage = function (req, res) {
     if (session.email)
         res.render("business_home");    // res.send({ email: session.email }); // Fix me
     else
-    res.render("business_login");
+        res.render("business_login");
 }
 
 exports.customer_signuppage = function (req, res) {
