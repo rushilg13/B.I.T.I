@@ -26,13 +26,13 @@ exports.business_home = function (req, res) {
 
             //if a user was found, that means the user's email matches the session email
             if (user) {
-                res.render("business_home", {user});
+                res.render("business_home", { user });
             } else {
                 //code if no user with session email was found
-                    res.redirect('/logout');
-                };
-            })
-        }
+                res.redirect('/logout');
+            };
+        })
+    }
     // res.send({ email: session.email }); // fix me. redirect to protected business home page
     else
         res.redirect('/business_signup');
@@ -123,16 +123,46 @@ exports.myorders = function (req, res) {
 
             //if a user was found, that means the user's email matches the session email
             if (user) {
-                res.render("myorders", {user});
+                res.render("myorders", { user });
             } else {
                 //code if no user with session email was found
-                    res.redirect('/logout');
-                };
-            })
-        }
+                res.redirect('/logout');
+            };
+        })
+    }
     // res.send({ email: session.email }); // fix me. redirect to protected business home page
     else
         res.redirect('/business_signup');
+}
+
+exports.create_order = async function (req, res) {
+    let session = req.session;
+    if (session.email) {
+
+        let business_id = await shop_db.findOne({ email: session.email }).exec();
+        let customer_id = await customer_db.findOne({ phone: req.body.phone }).exec();
+
+        let order = new order_db({
+            orderDesc: req.body.desc,
+            dueDate: req.body.duedate,
+            orderType: req.body.ordertype,
+            paymentMethod: req.body.paymentMethod,
+            payableAmount: req.body.paymentAmount,
+            status: "Confirmed",
+            updates: "",
+            additionalNotes: req.body.notes,
+            shopID: business_id,
+            profileID: customer_id
+        });
+        order.save(function (err) {
+            if (err) {
+                return (err);
+            }
+        });
+        res.redirect('/myorders');
+    }
+    else
+        res.render("business_login");
 }
 
 exports.customer_signuppage = function (req, res) {
