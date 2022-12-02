@@ -15,7 +15,7 @@ router.get("/business_home", project_controller.business_home);
 router.get("/myorders", project_controller.myorders);
 router.post("/create_order", project_controller.create_order);
 router.post('/update_order', project_controller.order_update_page); // from myorders page passes id of order
-// router.get('/update_order', project_controller.order_update);
+router.post('/delete_order', project_controller.delete_order);
 router.post('/updateOrder', project_controller.order_update); // from update order page passes updated order
 
 

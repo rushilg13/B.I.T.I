@@ -208,7 +208,7 @@ exports.order_update = async function (req, res) {
             updatedOn: dateObj
         };
         let customer = await customer_db.findOne({ phone: req.body.phone }).exec();
-        if (customer != null){
+        if (customer != null) {
             updatedOrder.profileID = customer._id;
         }
         order_db.findByIdAndUpdate(req.body.id, updatedOrder, function (err, order) {
@@ -220,13 +220,28 @@ exports.order_update = async function (req, res) {
         res.render("business_login", { flash: '' });
 };
 
-// Might Not need it
 exports.order_update_page = async function (req, res) {
     let session = req.session;
     if (session.email) {
         let user = await shop_db.findOne({ email: session.email }).exec();
         let order = await order_db.findById(req.body.id).exec();
         res.render('order_update', { user, order });
+    }
+    else
+        res.render("business_login", { flash: '' });
+};
+
+exports.delete_order = function (req, res) {
+    let session = req.session;
+    if (session.email) {
+        order_db.findByIdAndDelete(req.body.id, function (err, docs) {
+            if (err) {
+                console.log(err)
+            }
+            else {
+                res.redirect("/myorders");
+            }
+        });
     }
     else
         res.render("business_login", { flash: '' });
