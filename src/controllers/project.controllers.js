@@ -12,7 +12,7 @@ exports.business_signuppage = function (req, res) {
     if (session.email)
         res.redirect("/business_home");        // res.send({ email: session.email }); // fix me. redirect to protected business home page
     else
-        res.render("business_signup");
+        res.render("business_signup", { flash: '' });
 }
 
 exports.business_home = function (req, res) {
@@ -35,7 +35,7 @@ exports.business_home = function (req, res) {
     }
     // res.send({ email: session.email }); // fix me. redirect to protected business home page
     else
-        res.redirect('/business_signup');
+        res.render('/business_signup', { flash: '' });
 }
 
 exports.business_home_signup = function (req, res) {
@@ -58,7 +58,7 @@ exports.business_home_signup = function (req, res) {
         if (user) {
             var err = new Error('A business with this email has already registered. Please login.')
             err.status = 400;
-            res.render('business_login', {flash : 'An Account with this Email already exists! Please sign in.'});
+            res.render('business_login', { flash: 'An Account with this Email already exists! Please sign in.' });
             return err;
         } else {
             //code if no user with entered email was found
@@ -91,14 +91,14 @@ exports.business_home_login = function (req, res) {
             else {
                 var err = new Error('Incorrect Password.')
                 err.status = 400;
-                res.render('business_login', {flash:'Incorrect Password Entered. Please try again.'});
+                res.render('business_login', { flash: 'Incorrect Password Entered. Please try again.' });
                 return err;
             }
         } else {
             //code if no user with entered email was found
             var err = new Error('Invalid email ID. Please signup.')
             err.status = 400;
-            res.render('business_signup', {flash:'Incorrect Email ID Entered. Please Sign up.'});
+            res.render('business_signup', { flash: 'Incorrect Email ID Entered. Please Sign up.' });
             return err;
         }
     });
@@ -109,7 +109,7 @@ exports.business_loginpage = function (req, res) {
     if (session.email)
         res.redirect("/business_home");    // res.send({ email: session.email }); // Fix me
     else
-        res.render("business_login", {flash : ''});
+        res.render("business_login", { flash: '' });
 }
 
 exports.myorders = async function (req, res) {
@@ -134,7 +134,7 @@ exports.myorders = async function (req, res) {
     }
     // res.send({ email: session.email }); // fix me. redirect to protected business home page
     else
-        res.redirect('/business_signup');
+        res.render('business_signup', { flash: '' });
 }
 
 exports.create_order = async function (req, res) {
@@ -143,31 +143,94 @@ exports.create_order = async function (req, res) {
 
         let business_id = await shop_db.findOne({ email: session.email }).exec();
         let customer_id = await customer_db.findOne({ phone: req.body.phone }).exec();
-        let orders = await order_db.find({ shopID: business_id.shopID }).exec();
+        if (customer_id === null) {
+            let order = new order_db({
+                orderDesc: req.body.desc,
+                dueDate: req.body.duedate,
+                orderType: req.body.ordertype,
+                paymentMethod: req.body.paymentMethod,
+                payableAmount: req.body.paymentAmount,
+                status: "Confirmed",
+                updates: "",
+                customerPhone: req.body.phone,
+                additionalNotes: req.body.notes,
+                shopID: business_id.shopID,
+                profileID: null
+            });
+            order.save(function (err) {
+                if (err) {
+                    return (err);
+                }
+            });
+            res.redirect('/myorders');
+        }
+        else {
+            let order = new order_db({
+                orderDesc: req.body.desc,
+                dueDate: req.body.duedate,
+                orderType: req.body.ordertype,
+                paymentMethod: req.body.paymentMethod,
+                payableAmount: req.body.paymentAmount,
+                status: "Confirmed",
+                updates: "",
+                customerPhone: req.body.phone,
+                additionalNotes: req.body.notes,
+                shopID: business_id.shopID,
+                profileID: customer_id._id
+            });
+            order.save(function (err) {
+                if (err) {
+                    return (err);
+                }
+            });
+            res.redirect('/myorders');
+        }
+    }
+    else
+        res.render("business_login", { flash: '' });
+}
 
-        let order = new order_db({
+exports.order_update = async function (req, res) {
+    let session = req.session;
+    if (session.email) {
+        const dateObj = new Date();
+        let updatedOrder = {
             orderDesc: req.body.desc,
             dueDate: req.body.duedate,
             orderType: req.body.ordertype,
             paymentMethod: req.body.paymentMethod,
-            payableAmount: req.body.paymentAmount,
-            status: "Confirmed",
-            updates: "",
+            payableAmount: req.body.payableAmount,
+            status: req.body.status,
+            updates: req.body.updates,
+            customerPhone: req.body.phone,
             additionalNotes: req.body.notes,
-            shopID: business_id.shopID,
-            profileID: customer_id._id
+            profileID: req.body.id,
+            updatedOn: dateObj
+        };
+        let customer = await customer_db.findOne({ phone: req.body.phone }).exec();
+        if (customer != null){
+            updatedOrder.profileID = customer._id;
+        }
+        order_db.findByIdAndUpdate(req.body.id, updatedOrder, function (err, order) {
+            if (err) return next(err);
+            res.redirect("/myorders");
         });
-        order.save(function (err) {
-            if (err) {
-                return (err);
-            }
-        });
-        let user = business_id;
-        res.render('myorders', { flash: 'Order created successfully!', user, orders });
     }
     else
-        res.render("business_login");
-}
+        res.render("business_login", { flash: '' });
+};
+
+// Might Not need it
+exports.order_update_page = async function (req, res) {
+    let session = req.session;
+    if (session.email) {
+        let user = await shop_db.findOne({ email: session.email }).exec();
+        let order = await order_db.findById(req.body.id).exec();
+        res.render('order_update', { user, order });
+    }
+    else
+        res.render("business_login", { flash: '' });
+};
 
 exports.customer_signuppage = function (req, res) {
     res.render("customer_signup");

@@ -9,6 +9,7 @@ const orderSchema = new Schema({
     deliveredDate: { type: Date, default: null },
     orderType: String,
     paymentMethod: String,
+    customerPhone: String,
     payableAmount: Number, // check
     status: String,
     updates: String,
