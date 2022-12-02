@@ -38,19 +38,19 @@
 </head>
 
 <style>
-@media (min-width: 768px) {
-    .login-box .form-wrap {
-        padding: 5px;
+    @media (min-width: 768px) {
+        .login-box .form-wrap {
+            padding: 5px;
+        }
     }
-}
 
-@media (min-width: 992px) {
-    .login-box .form-wrap {
-        margin-top: -40px;
-        margin-bottom: -40px;
-        padding: 40px;
+    @media (min-width: 992px) {
+        .login-box .form-wrap {
+            margin-top: -40px;
+            margin-bottom: -40px;
+            padding: 40px;
+        }
     }
-}
 </style>
 
 <body>
@@ -108,13 +108,16 @@
                                         <div class="col-12">
                                             <div class="form-group position-relative">
                                                 <span class="zmdi zmdi-apps"></span>
-                                                <select size="3" class="form-control" name="categories" id="categories" multiple required>
+                                                <select size="3" class="form-control" name="categories" id="categories"
+                                                    multiple required>
                                                     <option value="Books" selected>Books</option>
                                                     <option value="Car & Automobiles">Car & Automobiles</option>
-                                                    <option value="Clothing & Accessories">Clothing & Accessories</option>
+                                                    <option value="Clothing & Accessories">Clothing & Accessories
+                                                    </option>
                                                     <option value="Electronics">Electronics</option>
                                                     <option value="Grocery & Gourmet">Grocery & Gourmet</option>
-                                                    <option value="Health & Personal Care">Health & Personal Care</option>
+                                                    <option value="Health & Personal Care">Health & Personal Care
+                                                    </option>
                                                     <option value="Home & Kitchen">Home & Kitchen</option>
                                                     <option value="Jewellery">Jewellery</option>
                                                     <option value="Musical Instruments">Musical Instruments</option>
@@ -135,6 +138,12 @@
                                     </div>
                                 </form>
                             </div>
+                            <% if(flash !='' ) {%>
+                                <div class="alert alert-danger">
+                                    <strong>Error!</strong>
+                                    <%= flash %>
+                                </div>
+                                <% } %>
                         </div>
                         <div class="col-md-6">
                             <div class="content text-center">

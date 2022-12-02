@@ -9,6 +9,7 @@ router.get("/", project_controller.homepage);
 
 router.get("/business_signup", project_controller.business_signuppage);
 router.post("/business_home_signup", project_controller.business_home_signup);
+router.get("/business_login", project_controller.business_loginpage);
 router.post("/business_home_login", project_controller.business_home_login);
 router.get("/business_home", project_controller.business_home);
 router.get("/myorders", project_controller.myorders);
@@ -33,7 +34,6 @@ router.get('/google/callback', passport.authenticate('google', {
 });
 
 
-router.get("/business_login", project_controller.business_loginpage);
 router.get("/customer_signup", project_controller.customer_signuppage);
 router.get("/customer_login", project_controller.customer_loginpage);
 

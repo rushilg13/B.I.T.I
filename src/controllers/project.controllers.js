@@ -58,7 +58,7 @@ exports.business_home_signup = function (req, res) {
         if (user) {
             var err = new Error('A business with this email has already registered. Please login.')
             err.status = 400;
-            res.redirect('/business_login');
+            res.render('business_login', {flash : 'An Account with this Email already exists! Please sign in.'});
             return err;
         } else {
             //code if no user with entered email was found
@@ -91,14 +91,14 @@ exports.business_home_login = function (req, res) {
             else {
                 var err = new Error('Incorrect Password.')
                 err.status = 400;
-                res.redirect('/business_login');
+                res.render('business_login', {flash:'Incorrect Password Entered. Please try again.'});
                 return err;
             }
         } else {
             //code if no user with entered email was found
             var err = new Error('Invalid email ID. Please signup.')
             err.status = 400;
-            res.redirect('/business_signup');
+            res.render('business_signup', {flash:'Incorrect Email ID Entered. Please Sign up.'});
             return err;
         }
     });
@@ -109,7 +109,7 @@ exports.business_loginpage = function (req, res) {
     if (session.email)
         res.redirect("/business_home");    // res.send({ email: session.email }); // Fix me
     else
-        res.render("business_login");
+        res.render("business_login", {flash : ''});
 }
 
 exports.myorders = async function (req, res) {
