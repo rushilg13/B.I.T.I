@@ -125,7 +125,7 @@ exports.myorders = async function (req, res) {
             if (user) {
                 let business_id = await shop_db.findOne({ email: session.email }).exec();
                 let orders = await order_db.find({ shopID: business_id }).exec();
-                res.render("myorders", { user, orders });
+                res.render("myorders", { user, orders, flash: '' });
             } else {
                 //code if no user with session email was found
                 res.redirect('/logout');
@@ -143,6 +143,7 @@ exports.create_order = async function (req, res) {
 
         let business_id = await shop_db.findOne({ email: session.email }).exec();
         let customer_id = await customer_db.findOne({ phone: req.body.phone }).exec();
+        let orders = await order_db.find({ shopID: business_id.shopID }).exec();
 
         let order = new order_db({
             orderDesc: req.body.desc,
@@ -153,15 +154,16 @@ exports.create_order = async function (req, res) {
             status: "Confirmed",
             updates: "",
             additionalNotes: req.body.notes,
-            shopID: business_id,
-            profileID: customer_id
+            shopID: business_id.shopID,
+            profileID: customer_id._id
         });
         order.save(function (err) {
             if (err) {
                 return (err);
             }
         });
-        res.redirect('/myorders');
+        let user = business_id;
+        res.render('myorders', { flash: 'Order created successfully!', user, orders });
     }
     else
         res.render("business_login");

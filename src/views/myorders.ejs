@@ -377,50 +377,66 @@
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-center row">
-                        <div class="col-md-10">
-                            <div class="rounded">
-                                <div class="table-responsive table-borderless">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-center">
-                                                </th>
-                                                <th>Order #</th>
-                                                <th>Order Description</th>
-                                                <th>status</th>
-                                                <th>Payment Due</th>
-                                                <th>Created On</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="table-body">
-                                            <% for(let i=0; i < orders.length; i++){ 
-                                                var date = new Date(orders[i].dateOfOrder.toString());
-                                                date = date.toISOString().substring(0, 10);
-                                                let yyyy = date.substring(0, 4);
-                                                let mm = date.substring(5, 7);
-                                                let dd = date.substring(8);
-                                            %>
-                                            <tr class="cell-1">
-                                                <td class="text-center">
+                    <% if(flash !='' ) {%>
+                        <div class="alert alert-success">
+                            <strong>Success!</strong>
+                            <%= flash %>
+                        </div>
+                        <% } %>
+                            <div class="d-flex justify-content-center row">
+                                <div class="col-md-10">
+                                    <div class="rounded">
+                                        <div class="table-responsive table-borderless">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">
+                                                        </th>
+                                                        <th>Order #</th>
+                                                        <th>Order Description</th>
+                                                        <th>status</th>
+                                                        <th>Payment Due</th>
+                                                        <th>Created On</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="table-body">
+                                                    <% for(let i=0; i < orders.length; i++){ var date=new
+                                                        Date(orders[i].dateOfOrder.toString());
+                                                        date=date.toISOString().substring(0, 10); let
+                                                        yyyy=date.substring(0, 4); let mm=date.substring(5, 7); let
+                                                        dd=date.substring(8); %>
+                                                        <tr class="cell-1">
+                                                            <td class="text-center">
 
-                                                </td>
-                                                <td><%= orders[i]._id %></td>
-                                                <td><%= orders[i].orderDesc %></td>
-                                                <td><span class="badge badge-info"><%= orders[i].status %></span></td>
-                                                <td><%= orders[i].payableAmount %></td>
-                                                <td><%= dd %>/<%= mm %>/<%= yyyy %></td>
-                                                <td><a href="#editOrderModal" class="btn btn-primary" data-toggle="modal"><i
-                                                    class="fa-solid fa-small fa-pen"></i> <span>Edit</span></a></td>
-                                            </tr>
-                                            <% } %>
-                                        </tbody>
-                                    </table>
+                                                            </td>
+                                                            <td>
+                                                                <%= orders[i]._id %>
+                                                            </td>
+                                                            <td>
+                                                                <%= orders[i].orderDesc %>
+                                                            </td>
+                                                            <td><span class="badge badge-info">
+                                                                    <%= orders[i].status %>
+                                                                </span></td>
+                                                            <td>
+                                                                <%= orders[i].payableAmount %>
+                                                            </td>
+                                                            <td>
+                                                                <%= dd %>/<%= mm %>/<%= yyyy %>
+                                                            </td>
+                                                            <td><a href="#editOrderModal" class="btn btn-primary"
+                                                                    data-toggle="modal"><i
+                                                                        class="fa-solid fa-small fa-pen"></i>
+                                                                    <span>Edit</span></a></td>
+                                                        </tr>
+                                                        <% } %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
                 </div>
                 <!-- /.container-fluid -->
 
@@ -448,7 +464,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Order Due Date</label>
-                                    <input type="datetime-local" name="duedate" id="duedate" class="form-control" required>
+                                    <input type="datetime-local" name="duedate" id="duedate" class="form-control"
+                                        required>
                                 </div>
                                 <div class="form-group">
                                     <label>Order Type</label>
@@ -472,11 +489,13 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Payment Method</label>
-                                    <input type="text" id="paymentMethod" name="paymentMethod" class="form-control" required>
+                                    <input type="text" id="paymentMethod" name="paymentMethod" class="form-control"
+                                        required>
                                 </div>
                                 <div class="form-group">
                                     <label>Payment Amount</label>
-                                    <input type="number" id="paymentAmount" name="paymentAmount" class="form-control" required>
+                                    <input type="number" id="paymentAmount" name="paymentAmount" class="form-control"
+                                        required>
                                 </div>
                                 <div class="form-group">
                                     <label>Additional Notes</label>
@@ -513,7 +532,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Order Due Date</label>
-                                    <input type="datetime-local" name="duedate" id="duedate" class="form-control" required>
+                                    <input type="datetime-local" name="duedate" id="duedate" class="form-control"
+                                        required>
                                 </div>
                                 <div class="form-group">
                                     <label>Order Type</label>
@@ -537,11 +557,13 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Payment Method</label>
-                                    <input type="text" id="paymentMethod" name="paymentMethod" class="form-control" required>
+                                    <input type="text" id="paymentMethod" name="paymentMethod" class="form-control"
+                                        required>
                                 </div>
                                 <div class="form-group">
                                     <label>Payment Amount</label>
-                                    <input type="number" id="paymentAmount" name="paymentAmount" class="form-control" required>
+                                    <input type="number" id="paymentAmount" name="paymentAmount" class="form-control"
+                                        required>
                                 </div>
                                 <div class="form-group">
                                     <label>Additional Notes</label>

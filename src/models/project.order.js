@@ -4,18 +4,18 @@ const Schema = mongoose.Schema;
 const orderSchema = new Schema({
     orderDesc: String,
     orderID: mongoose.Schema.Types.ObjectId,
-    dateOfOrder: {type: Date, default: Date.now},
+    dateOfOrder: { type: Date, default: Date.now },
     dueDate: Date,
-    deliveredDate: {type: Date, default: null},
+    deliveredDate: { type: Date, default: null },
     orderType: String,
     paymentMethod: String,
     payableAmount: Number, // check
     status: String,
     updates: String,
-    updatedOn: {type: Date, default: null},
+    updatedOn: { type: Date, default: null },
     additionalNotes: String,
-    shopID: { type: mongoose.Schema.Types.ObjectId, ref:"Shop"},
-    profileID: { type: mongoose.Schema.Types.ObjectId, ref:"Customer"}
+    shopID: { type: mongoose.Schema.Types.ObjectId, ref: "Shop" },
+    profileID: { type: mongoose.Schema.Types.ObjectId, ref: "Customer" }
 });
 
 // PRE MIDDLEWARE
