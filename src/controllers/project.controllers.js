@@ -325,10 +325,20 @@ exports.customer_home_login = function (req, res) {
 
 exports.customer_home = function (req, res) {
     let session = req.session;
-    if (session.email && session.type === 'customer')
-        res.send("customer home");
+    if (session.email && session.type === 'customer'){
+        customer_db.findOne({ email: session.email }, function (err, user) {
+            if (err) {
+                console.error(err);
+            }
+            if (user) {
+                res.render('customer_home', { user });
+            } else {
+                res.redirect('/logout');
+            };
+        })
+    }
     else {
-        res.redirect('/customer_signup')
+        res.redirect('/customer_login')
     }
 }
 
