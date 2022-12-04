@@ -248,11 +248,49 @@ exports.delete_order = function (req, res) {
 };
 
 exports.customer_signuppage = function (req, res) {
-    res.render("customer_signup");
+    res.render("customer_signup", { flash: '' });
 }
+
+exports.customer_home_signup = function (req, res) {
+    let customer = new customer_db({
+        name: req.body.name,
+        email: req.body.email,
+        phone: req.body.phone,
+        address: req.body.address,
+        password: req.body.password,
+    });
+
+    customer_db.findOne({ email: req.body.email }, function (err, user) {
+        if (err) {
+            console.error(err);
+        }
+        if (user) {
+            var err = new Error('A customers with this email has already registered. Please login.')
+            err.status = 400;
+            res.render('customer_login', { flash: 'An Account with this Email already exists! Please sign in.' });
+            return err;
+        } else {
+            //code if no user with entered email was found
+            customer.save(function (err) {
+                if (err) {
+                    return (err);
+                }
+                let session = req.session;
+                session.email = req.body.email;
+                res.redirect('/customer_home')
+            })
+        }
+    });
+}
+
 
 exports.customer_loginpage = function (req, res) {
     res.render("customer_login");
+}
+
+
+exports.customer_home = function (req, res) {
+    res.send("customer home");
 }
 
 exports.logout = function (req, res) {

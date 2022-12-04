@@ -31,7 +31,9 @@
     <link href="css/signup.css" rel="stylesheet">
 
     <!-- Material Design font Stylesheet -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css" integrity="sha256-3sPp8BkKUE7QyPSl6VfBByBroQbKxKG7tsusY2mhbVY=" crossorigin="anonymous" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css"
+        integrity="sha256-3sPp8BkKUE7QyPSl6VfBByBroQbKxKG7tsusY2mhbVY=" crossorigin="anonymous" />
 
 </head>
 
@@ -44,47 +46,71 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col-md-6">
                             <div class="form-wrap bg-white">
-                                <h4 class="btm-sep pb-3 mb-5" style="text-align: center;">Customer Signup</h4>
-                                <form class="form" method="post" action="#">
+                                <h4 class="btm-sep pb-1 mb-1" style="text-align: center;">Customer Sign up</h4>
+                                <form class="form" method="post" action="/customer_home_signup">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group position-relative">
-                                                <span class="zmdi zmdi-account"></span>
-                                                <input type="email" id="email" class="form-control" placeholder="Email Address">
+                                                <span class="zmdi zmdi-face"></span>
+                                                <input type="text" id="name" class="form-control" name="name"
+                                                    placeholder="Customer Name" required>
                                             </div>
                                         </div>
                                         <br><br>
                                         <div class="col-12">
                                             <div class="form-group position-relative">
-                                                <span class="zmdi zmdi-email"></span>
-                                                <input type="password" id="password" class="form-control" placeholder="Password">
+                                                <span class="zmdi zmdi-account"></span>
+                                                <input type="email" id="email" class="form-control" name="email"
+                                                    placeholder="Email Address" required>
                                             </div>
                                         </div>
-                                        <br>
-                                        <div class="col-12 text-lg-right">
-                                            <a href="#" class="c-black">Forgot password ?</a>
+                                        <br><br>
+                                        <div class="col-12">
+                                            <div class="form-group position-relative">
+                                                <span class="zmdi zmdi-lock"></span>
+                                                <input type="password" id="password" class="form-control"
+                                                    name="password" placeholder="Password" required minlength="8">
+                                            </div>
                                         </div>
+                                        <br><br>
+                                        <div class="col-12">
+                                            <div class="form-group position-relative">
+                                                <span class="zmdi zmdi-phone"></span>
+                                                <input type="tel" id="phone" class="form-control" name="phone"
+                                                    placeholder="Phone Number" required maxlength="10" minlength="10">
+                                            </div>
+                                        </div>
+                                        <br><br>
+                                        <div class="col-12">
+                                            <div class="form-group position-relative">
+                                                <span class="zmdi zmdi-home"></span>
+                                                <textarea id="address" class="form-control" row="4" cols="50"
+                                                    name="address" placeholder="Address" required></textarea>
+                                            </div>
+                                        </div>
+                                        <br><br><br>
                                         <div class="col-12 mt-30">
-                                            <button type="submit" style="margin: 0 auto; display: block;" id="submit" class="btn btn-lg btn-custom btn-dark btn-block">Sign In
-                                            </button>
+                                            <input type="submit" style="margin: 0 auto; display: block;" id="submit"
+                                                class="btn btn-lg btn-custom btn-dark btn-block" value="Sign Up">
                                         </div>
                                     </div>
                                 </form>
                             </div>
+                            <% if(flash !='' ) {%>
+                                <div class="alert alert-danger">
+                                    <strong>Error!</strong>
+                                    <%= flash %>
+                                </div>
+                                <% } %>
                         </div>
                         <div class="col-md-6">
                             <div class="content text-center">
                                 <div class="border-bottom pb-5 mb-5">
-                                    <h3 class="c-black">First time here?</h3>
-                                    <a href="sign-up.ejs" class="btn btn-custom">Sign up</a>
+                                    <h3 class="c-black">Already Have an Account?</h3>
+                                    <a href="/customer_login" class="btn btn-custom">Sign In</a>
                                 </div>
-                                <h5 class="c-black mb-4 mt-n1">Or Sign In With</h5>
-                                <div class="socials">
-                                    <a href="#" class="zmdi zmdi-facebook"></a>
-                                    <a href="#" class="zmdi zmdi-twitter"></a>
-                                    <a href="#" class="zmdi zmdi-google"></a>
-                                    <a href="#" class="zmdi zmdi-instagram"></a>
-                                </div>
+                                <h5 class="c-black mb-4 mt-n1">Business? Sign Up here</h5>
+                                <a href="/business_signup" class="btn btn-custom">Sign Up</a>
                             </div>
                         </div>
                     </div>
