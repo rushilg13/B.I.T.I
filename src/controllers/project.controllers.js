@@ -9,7 +9,7 @@ exports.homepage = function (req, res) {
 
 exports.business_signuppage = function (req, res) {
     let session = req.session;
-    if (session.email)
+    if (session.email && session.type === "business")
         res.redirect("/business_home");        // res.send({ email: session.email }); // fix me. redirect to protected business home page
     else
         res.render("business_signup", { flash: '' });
@@ -17,7 +17,7 @@ exports.business_signuppage = function (req, res) {
 
 exports.business_home = function (req, res) {
     let session = req.session;
-    if (session.email) {
+    if (session.email && session.type === "business") {
         shop_db.findOne({ email: session.email }, function (err, user) {
             if (err) {
                 //handle error here
@@ -35,7 +35,7 @@ exports.business_home = function (req, res) {
     }
     // res.send({ email: session.email }); // fix me. redirect to protected business home page
     else
-        res.render('/business_signup', { flash: '' });
+        res.render('business_signup', { flash: '' });
 }
 
 exports.business_home_signup = function (req, res) {
@@ -68,6 +68,7 @@ exports.business_home_signup = function (req, res) {
                 }
                 let session = req.session;
                 session.email = req.body.email;
+                session.type = "business";
                 res.redirect('/business_home')
             })
         }
@@ -77,15 +78,13 @@ exports.business_home_signup = function (req, res) {
 exports.business_home_login = function (req, res) {
     shop_db.findOne({ email: req.body.email }, function (err, user) {
         if (err) {
-            //handle error here
             console.error(err);
         }
-
-        //if a user was found, that means the user's email matches the entered email
         if (user) {
             if (user.password === req.body.password) {
                 let session = req.session;
                 session.email = req.body.email;
+                session.type = "business";
                 res.redirect('/business_home')
             }
             else {
@@ -106,7 +105,7 @@ exports.business_home_login = function (req, res) {
 
 exports.business_loginpage = function (req, res) {
     let session = req.session;
-    if (session.email)
+    if (session.email && session.type === "business")
         res.redirect("/business_home");    // res.send({ email: session.email }); // Fix me
     else
         res.render("business_login", { flash: '' });
@@ -114,7 +113,7 @@ exports.business_loginpage = function (req, res) {
 
 exports.myorders = async function (req, res) {
     let session = req.session;
-    if (session.email) {
+    if (session.email && session.type === "business") {
         shop_db.findOne({ email: session.email }, async function (err, user) {
             if (err) {
                 //handle error here
@@ -139,7 +138,7 @@ exports.myorders = async function (req, res) {
 
 exports.create_order = async function (req, res) {
     let session = req.session;
-    if (session.email) {
+    if (session.email && session.type === "business") {
 
         let business_id = await shop_db.findOne({ email: session.email }).exec();
         let customer_id = await customer_db.findOne({ phone: req.body.phone }).exec();
@@ -192,7 +191,7 @@ exports.create_order = async function (req, res) {
 
 exports.order_update = async function (req, res) {
     let session = req.session;
-    if (session.email) {
+    if (session.email && session.type === "business") {
         const dateObj = new Date();
         let updatedOrder = {
             orderDesc: req.body.desc,
@@ -222,7 +221,7 @@ exports.order_update = async function (req, res) {
 
 exports.order_update_page = async function (req, res) {
     let session = req.session;
-    if (session.email) {
+    if (session.email && session.type === "business") {
         let user = await shop_db.findOne({ email: session.email }).exec();
         let order = await order_db.findById(req.body.id).exec();
         res.render('order_update', { user, order });
@@ -233,7 +232,7 @@ exports.order_update_page = async function (req, res) {
 
 exports.delete_order = function (req, res) {
     let session = req.session;
-    if (session.email) {
+    if (session.email && session.type === "business") {
         order_db.findByIdAndDelete(req.body.id, function (err, docs) {
             if (err) {
                 console.log(err)
@@ -248,7 +247,11 @@ exports.delete_order = function (req, res) {
 };
 
 exports.customer_signuppage = function (req, res) {
-    res.render("customer_signup", { flash: '' });
+    let session = req.session;
+    if (session.email && session.type === "customer")
+        res.redirect("/customer_home");
+    else
+        res.render("customer_signup", { flash: '' });
 }
 
 exports.customer_home_signup = function (req, res) {
@@ -277,6 +280,7 @@ exports.customer_home_signup = function (req, res) {
                 }
                 let session = req.session;
                 session.email = req.body.email;
+                session.type = "customer";
                 res.redirect('/customer_home')
             })
         }
@@ -285,7 +289,11 @@ exports.customer_home_signup = function (req, res) {
 
 
 exports.customer_loginpage = function (req, res) {
-    res.render("customer_login", { flash: '' });
+    let session = req.session;
+    if (session.email && session.type === "customer")
+        res.redirect("/customer_home");
+    else
+        res.render("customer_login", { flash: '' });
 }
 
 exports.customer_home_login = function (req, res) {
@@ -297,6 +305,7 @@ exports.customer_home_login = function (req, res) {
             if (user.password === req.body.password) {
                 let session = req.session;
                 session.email = req.body.email;
+                session.type = "customer";
                 res.redirect('/customer_home')
             }
             else {
@@ -315,7 +324,12 @@ exports.customer_home_login = function (req, res) {
 }
 
 exports.customer_home = function (req, res) {
-    res.send("customer home");
+    let session = req.session;
+    if (session.email && session.type === 'customer')
+        res.send("customer home");
+    else {
+        res.redirect('/customer_signup')
+    }
 }
 
 exports.logout = function (req, res) {
