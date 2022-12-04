@@ -40,6 +40,7 @@ router.get('/google/callback', passport.authenticate('google', {
 router.get("/customer_signup", project_controller.customer_signuppage);
 router.post("/customer_home_signup", project_controller.customer_home_signup);
 router.get("/customer_login", project_controller.customer_loginpage);
+router.post("/customer_home_login", project_controller.customer_home_login);
 
 router.get("/customer_home", project_controller.customer_home);
 

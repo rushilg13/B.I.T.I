@@ -285,9 +285,34 @@ exports.customer_home_signup = function (req, res) {
 
 
 exports.customer_loginpage = function (req, res) {
-    res.render("customer_login");
+    res.render("customer_login", { flash: '' });
 }
 
+exports.customer_home_login = function (req, res) {
+    customer_db.findOne({ email: req.body.email }, function (err, user) {
+        if (err) {
+            console.error(err);
+        }
+        if (user) {
+            if (user.password === req.body.password) {
+                let session = req.session;
+                session.email = req.body.email;
+                res.redirect('/customer_home')
+            }
+            else {
+                var err = new Error('Incorrect Password.')
+                err.status = 400;
+                res.render('customer_login', { flash: 'Incorrect Password Entered. Please try again.' });
+                return err;
+            }
+        } else {
+            var err = new Error('Invalid email ID. Please signup.')
+            err.status = 400;
+            res.render('customer_signup', { flash: 'Incorrect Email ID Entered. Please Sign up.' });
+            return err;
+        }
+    });
+}
 
 exports.customer_home = function (req, res) {
     res.send("customer home");
