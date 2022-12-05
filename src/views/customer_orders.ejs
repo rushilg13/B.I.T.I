@@ -443,32 +443,87 @@
                                                                                                 <%= date[2] %>
                                                                                 </td>
                                                                                 <td class="row">
-                                                                                    <form action="/update_order"
-                                                                                        method="post">
-                                                                                        <input type="hidden"
-                                                                                            class="form-control"
-                                                                                            value="<%= orders[i]._id %>"
-                                                                                            name="id">
-                                                                                        <button
-                                                                                            class="btn btn-primary"><i
-                                                                                                class="fa-solid fa-small fa-pen"></i>
-                                                                                            <span></span>
-                                                                                        </button>
-                                                                                    </form>
-                                                                                    <br>
-                                                                                    <form action="/delete_order"
-                                                                                        method="post">
-                                                                                        <input type="hidden"
-                                                                                            class="form-control"
-                                                                                            value="<%= orders[i]._id %>"
-                                                                                            name="id">
-                                                                                        <button
-                                                                                            class="btn btn-danger"><i
-                                                                                                class="fa-solid fa-trash"></i>
-                                                                                            <span></span>
-                                                                                        </button>
-                                                                                    </form>
+                                                                                    <a href="#viewModal" class="btn btn-info" data-toggle="modal"><i
+                                                                                        class="fa-solid fa-small fa-eye"></i> <span> View</span></a>
                                                                                 </td>
+                                                                                <div id="viewModal" class="modal fade">
+                                                                                    <%  function dateConvert(d){
+                                                                                        let dt = d.toISOString();
+                                                                                        dt = dt.substring(0, 16);
+                                                                                        return dt;
+                                                                                    }
+                                                                                    %>
+                                                                                    <div class="modal-dialog">
+                                                                                        <div class="modal-content">
+                                                                                            <form method="post" action="#">
+                                                                                                <div class="modal-header">
+                                                                                                    <h4 class="modal-title">View Order Details</h4>
+                                                                                                    <button type="button" class="close" data-dismiss="modal"
+                                                                                                        aria-hidden="true">&times;</button>
+                                                                                                </div>
+                                                                                                <div class="modal-body">
+                                                                                                    <div class="form-group">
+                                                                                                        <label>Order Description</label>
+                                                                                                        <input value="<%= orders[i].orderDesc %>" type="text" name="desc" id="desc" class="form-control" readonly>
+                                                                                                    </div>
+                                                                                                    <div class="form-group">
+                                                                                                        <label>Order Status</label>
+                                                                                                        <input value="<%= orders[i].status %>" type="text" name="desc" id="desc" class="form-control" readonly>
+                                                                                                    </div>
+                                                                                                    <div class="form-group">
+                                                                                                        <label>Customer Phone Number</label>
+                                                                                                        <input type="tel" maxlength="10" minlength="10" id="phone" name="phone"
+                                                                                                            class="form-control" value="<%= orders[i].customerPhone %>" readonly>
+                                                                                                    </div>
+                                                                                                    <div class="form-group">
+                                                                                                        <label>Order Due Date</label>
+                                                                                                        <input type="datetime-local" name="duedate" id="duedate" class="form-control" value="<%= dateConvert(orders[i].dueDate) %>"
+                                                                                                            readonly>
+                                                                                                    </div>
+                                                                                                    <div class="form-group">
+                                                                                                        <label>Order Updates</label>
+                                                                                                        <input value="<%= orders[i].updates %>" type="text" name="updates" id="updates" class="form-control" readonly>
+                                                                                                    </div>
+                                                                                                    <div class="form-group">
+                                                                                                        <label>Updated On</label>
+                                                                                                        <input type="datetime-local" name="updatedOn" id="updatedOn" class="form-control" value="<%= dateConvert(orders[i].updatedOn) %>"
+                                                                                                            readonly>
+                                                                                                    </div>
+                                                                                                    <div class="form-group">
+                                                                                                        <label>Delivered on</label>
+                                                                                                        <% if (orders[i].deliveredDate === null) {%>
+                                                                                                            <input value="Not Delivered Yet" type="text" name="deliveredDate" id="deliveredDate" class="form-control" readonly>
+                                                                                                        <% } else {%>    
+                                                                                                        <input type="datetime-local" name="deliveredDate" id="deliveredDate" class="form-control" value="<%= dateConvert(orders[i].deliveredDate) %>"
+                                                                                                            readonly>
+                                                                                                            <% }%>  
+                                                                                                    </div>
+                                                                                                    <div class="form-group">
+                                                                                                        <label>Order Type</label>
+                                                                                                        <input value="<%= orders[i].orderType %>" type="text" name="ordertype" id="ordertype" class="form-control" readonly>
+                                                                                                    </div>
+                                                                                                    <div class="form-group">
+                                                                                                        <label>Payment Method</label>
+                                                                                                        <input type="text" id="paymentMethod" name="paymentMethod" class="form-control" value="<%= orders[i].paymentMethod %>"
+                                                                                                            readonly>
+                                                                                                    </div>
+                                                                                                    <div class="form-group">
+                                                                                                        <label>Payment Amount</label>
+                                                                                                        <input type="number" id="paymentAmount" name="paymentAmount" class="form-control" value="<%= orders[i].payableAmount %>"
+                                                                                                            readonly>
+                                                                                                    </div>
+                                                                                                    <div class="form-group">
+                                                                                                        <label>Additional Notes</label>
+                                                                                                        <textarea id="notes" name="notes" class="form-control" readonly><%= orders[i].additionalNotes %></textarea>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="modal-footer">
+                                                                                                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                                                                                                </div>
+                                                                                            </form>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
                                                 </tr>
                                                 <% } %>
                                         </tbody>
