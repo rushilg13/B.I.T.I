@@ -111,7 +111,7 @@ exports.business_loginpage = function (req, res) {
         res.render("business_login", { flash: '' });
 }
 
-exports.myorders = async function (req, res) {
+exports.business_orders = async function (req, res) {
     let session = req.session;
     if (session.email && session.type === "business") {
         shop_db.findOne({ email: session.email }, async function (err, user) {
@@ -124,7 +124,7 @@ exports.myorders = async function (req, res) {
             if (user) {
                 let business_id = await shop_db.findOne({ email: session.email }).exec();
                 let orders = await order_db.find({ shopID: business_id }).exec();
-                res.render("myorders", { user, orders, flash: '' });
+                res.render("business_orders", { user, orders, flash: '' });
             } else {
                 //code if no user with session email was found
                 res.redirect('/logout');
@@ -161,7 +161,7 @@ exports.create_order = async function (req, res) {
                     return (err);
                 }
             });
-            res.redirect('/myorders');
+            res.redirect('/business_orders');
         }
         else {
             let order = new order_db({
@@ -182,7 +182,7 @@ exports.create_order = async function (req, res) {
                     return (err);
                 }
             });
-            res.redirect('/myorders');
+            res.redirect('/business_orders');
         }
     }
     else
@@ -212,7 +212,7 @@ exports.order_update = async function (req, res) {
         }
         order_db.findByIdAndUpdate(req.body.id, updatedOrder, function (err, order) {
             if (err) return next(err);
-            res.redirect("/myorders");
+            res.redirect("/business_orders");
         });
     }
     else
@@ -238,7 +238,7 @@ exports.delete_order = function (req, res) {
                 console.log(err)
             }
             else {
-                res.redirect("/myorders");
+                res.redirect("/business_orders");
             }
         });
     }
