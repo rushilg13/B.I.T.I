@@ -342,6 +342,26 @@ exports.customer_home = function (req, res) {
     }
 }
 
+exports.customer_orders = async function (req, res) {
+    let session = req.session;
+    if (session.email && session.type === "customer") {
+        customer_db.findOne({ email: session.email }, async function (err, user) {
+            if (err) {
+                console.error(err);
+            }
+            if (user) {
+                let customer_id = await customer_db.findOne({ email: session.email }).exec();
+                let orders = await order_db.find({ profileID: customer_id }).sort({ dateOfOrder: -1 }).exec();
+                res.render("customer_orders", { user, orders });
+            } else {
+                res.redirect('/logout');
+            };
+        })
+    }
+    else
+    res.redirect('/customer_login');
+}
+
 exports.logout = function (req, res) {
     req.session.destroy();
     res.redirect('/');
