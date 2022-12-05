@@ -123,7 +123,7 @@ exports.business_orders = async function (req, res) {
             //if a user was found, that means the user's email matches the session email
             if (user) {
                 let business_id = await shop_db.findOne({ email: session.email }).exec();
-                let orders = await order_db.find({ shopID: business_id }).exec();
+                let orders = await order_db.find({ shopID: business_id }).sort({ dateOfOrder: -1 }).exec();
                 res.render("business_orders", { user, orders, flash: '' });
             } else {
                 //code if no user with session email was found
@@ -325,7 +325,7 @@ exports.customer_home_login = function (req, res) {
 
 exports.customer_home = function (req, res) {
     let session = req.session;
-    if (session.email && session.type === 'customer'){
+    if (session.email && session.type === 'customer') {
         customer_db.findOne({ email: session.email }, function (err, user) {
             if (err) {
                 console.error(err);

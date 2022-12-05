@@ -392,7 +392,7 @@
                                                         </th>
                                                         <th>Order #</th>
                                                         <th>Order Description</th>
-                                                        <th>status</th>
+                                                        <th>Status</th>
                                                         <th>Payment Due</th>
                                                         <th>Created On</th>
                                                         <th></th>
@@ -414,32 +414,75 @@
                                                             <td>
                                                                 <%= orders[i].orderDesc %>
                                                             </td>
-                                                            <td><span class="badge badge-info">
-                                                                    <%= orders[i].status %>
-                                                                </span></td>
-                                                            <td>
-                                                                <%= orders[i].payableAmount %>
-                                                            </td>
-                                                            <td>
-                                                                <%= dd %>/<%= mm %>/<%= yyyy %>
-                                                            </td>
-                                                            <td class="row">
-                                                                <form action="/update_order" method="post">
-                                                                <input type="hidden" class="form-control"
-                                                                    value="<%= orders[i]._id %>" name="id">
-                                                                <button class="btn btn-primary"><i
-                                                                        class="fa-solid fa-small fa-pen"></i>
-                                                                    <span></span>
-                                                                </button></form>
-                                                                <br>
-                                                                <form action="/delete_order" method="post">
-                                                                    <input type="hidden" class="form-control"
-                                                                        value="<%= orders[i]._id %>" name="id">
-                                                                    <button class="btn btn-danger"><i
-                                                                            class="fa-solid fa-trash"></i>
-                                                                        <span></span>
-                                                                </button></form>
-                                                            </td>
+                                                            <% if (orders[i].status==="Ready" ) {%>
+                                                                <td><span class="badge badge-success">
+                                                                        <%= orders[i].status %>
+                                                                    </span>
+                                                                </td>
+                                                                <% } else if (orders[i].status==="Confirmed" ) {%>
+                                                                    <td><span class="badge badge-primary">
+                                                                            <%= orders[i].status %>
+                                                                        </span>
+                                                                    </td>
+                                                                    <% } if (orders[i].status==="Under Process" ) {%>
+                                                                        <td><span class="badge badge-warning">
+                                                                                <%= orders[i].status %>
+                                                                            </span>
+                                                                        </td>
+                                                                        <% } if (orders[i].status==="Needs Action" ) {%>
+                                                                            <td><span class="badge badge-info">
+                                                                                    <%= orders[i].status %>
+                                                                                </span>
+                                                                            </td>
+                                                                            <% } if (orders[i].status==="Completed" )
+                                                                                {%>
+                                                                                <td><span class="badge badge-success">
+                                                                                        <%= orders[i].status %>
+                                                                                    </span>
+                                                                                </td>
+                                                                                <% } if (orders[i].status==="Cancelled"
+                                                                                    ) {%>
+                                                                                    <td><span
+                                                                                            class="badge badge-danger">
+                                                                                            <%= orders[i].status %>
+                                                                                        </span>
+                                                                                    </td>
+                                                                                    <% } %>
+                                                                                        <td>
+                                                                                            <%= orders[i].payableAmount
+                                                                                                %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= dd %>/<%= mm %>/<%= yyyy
+                                                                                                        %>
+                                                                                        </td>
+                                                                                        <td class="row">
+                                                                                            <form action="/update_order"
+                                                                                                method="post">
+                                                                                                <input type="hidden"
+                                                                                                    class="form-control"
+                                                                                                    value="<%= orders[i]._id %>"
+                                                                                                    name="id">
+                                                                                                <button
+                                                                                                    class="btn btn-primary"><i
+                                                                                                        class="fa-solid fa-small fa-pen"></i>
+                                                                                                    <span></span>
+                                                                                                </button>
+                                                                                            </form>
+                                                                                            <br>
+                                                                                            <form action="/delete_order"
+                                                                                                method="post">
+                                                                                                <input type="hidden"
+                                                                                                    class="form-control"
+                                                                                                    value="<%= orders[i]._id %>"
+                                                                                                    name="id">
+                                                                                                <button
+                                                                                                    class="btn btn-danger"><i
+                                                                                                        class="fa-solid fa-trash"></i>
+                                                                                                    <span></span>
+                                                                                                </button>
+                                                                                            </form>
+                                                                                        </td>
                                                         </tr>
                                                         <% } %>
                                                 </tbody>
