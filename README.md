@@ -9,4 +9,6 @@ Relational Schema
 ------
 ![Relational Schema](Relational_Schema.png)
 
-https://github.com/startbootstrap/startbootstrap-sb-admin-2
+Template link
+------
+[Link to dashboard template](https://github.com/startbootstrap/startbootstrap-sb-admin-2)
