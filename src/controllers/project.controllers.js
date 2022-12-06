@@ -203,7 +203,6 @@ exports.order_update = async function (req, res) {
             updates: req.body.updates,
             customerPhone: req.body.phone,
             additionalNotes: req.body.notes,
-            profileID: req.body.id,
             updatedOn: dateObj
         };
         let customer = await customer_db.findOne({ phone: req.body.phone }).exec();
@@ -214,17 +213,6 @@ exports.order_update = async function (req, res) {
             if (err) return next(err);
             res.redirect("/business_orders");
         });
-    }
-    else
-        res.render("business_login", { flash: '' });
-};
-
-exports.order_update_page = async function (req, res) {
-    let session = req.session;
-    if (session.email && session.type === "business") {
-        let user = await shop_db.findOne({ email: session.email }).exec();
-        let order = await order_db.findById(req.body.id).exec();
-        res.render('order_update', { user, order });
     }
     else
         res.render("business_login", { flash: '' });
