@@ -25,7 +25,6 @@
 </head>
 
 <body id="page-top">
-
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -386,7 +385,9 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 Earnings (Monthly)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">₹<%=
+                                                    dashboard_stats.monthly_earnings %>
+                                            </div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -404,10 +405,12 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Earnings (Annual)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">₹<%=
+                                                    dashboard_stats.yearly_earnings %>
+                                            </div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                            <i class="fas fa-rupee-sign fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -420,17 +423,23 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                                Completed Orders
                                             </div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                                                    <% let pending_percentage=parseInt(
+                                                        (dashboard_stats.total_orders-dashboard_stats.pending_orders)*100
+                                                        / dashboard_stats.total_orders) %>
+                                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                                                            <%=pending_percentage%>%
+                                                        </div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="progress progress-sm mr-2">
                                                         <div class="progress-bar bg-info" role="progressbar"
-                                                            style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: <%=pending_percentage%>%" aria-valuenow="50"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -450,11 +459,13 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Pending Requests</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                                Orders Received</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                <%=dashboard_stats.total_orders%>
+                                            </div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                            <i class="fa-solid fa-thumbs-up fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -491,7 +502,7 @@
                                 <!-- Card Body -->
                                 <div class="card-body">
                                     <div class="chart-area">
-                                        <canvas id="myAreaChart"></canvas>
+                                        <canvas id="myChart"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -773,11 +784,44 @@
 
     <!-- Render charts. plugins not required. maybe use apis? -->
     <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.1/dist/chart.umd.min.js"></script>
     <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
+    <script>
+        function toMonthName(monthNumber) {
+            const date = new Date();
+            date.setMonth(monthNumber - 1);
+
+            return date.toLocaleString('en-US', {
+                month: 'long',
+            });
+        }
+        const ctx = document.getElementById('myChart');
+        const d = new Date();
+        const curr_month = d.getMonth() + 1;
+        let ytd_months = []
+        for(let year = 1; year <= curr_month; year ++){
+            ytd_months.push(toMonthName(year));
+        }
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ytd_months,
+                    datasets: [{
+                        label: 'Earnings YTD',
+                        data: [<%= Object.values(bar_chart_stats) %>],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+    </script>
+
 
 </body>
 

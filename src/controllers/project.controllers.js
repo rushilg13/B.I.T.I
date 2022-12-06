@@ -18,7 +18,7 @@ exports.business_signuppage = function (req, res) {
 exports.business_home = function (req, res) {
     let session = req.session;
     if (session.email && session.type === "business") {
-        shop_db.findOne({ email: session.email }, function (err, user) {
+        shop_db.findOne({ email: session.email }, async function (err, user) {
             if (err) {
                 //handle error here
                 console.error(err);
@@ -26,7 +26,38 @@ exports.business_home = function (req, res) {
 
             //if a user was found, that means the user's email matches the session email
             if (user) {
-                res.render("business_home", { user });
+                let business = await shop_db.findOne({ email: session.email }).exec();
+                let business_id = business._id;
+                let orders = await order_db.find({ shopID: business_id }).exec();
+                let dashboard_stats = { monthly_earnings: 0, yearly_earnings: 0, pending_orders: 0, total_orders: 0 };
+                let bar_chart_stats = {
+                    '0': 0,
+                    '1': 0,
+                    '2': 0,
+                    '3': 0,
+                    '4': 0,
+                    '5': 0,
+                    '6': 0,
+                    '7': 0,
+                    '8': 0,
+                    '9': 0,
+                    '10': 0,
+                    '11': 0
+                };
+                const d = new Date();
+                monthly_earnings_func = orders.map((order) => {
+                    orderDate = new Date(order.dateOfOrder.toISOString());
+                    if (orderDate.getMonth() === d.getMonth() && order.status === "Completed")
+                        dashboard_stats.monthly_earnings += order.payableAmount;
+                    if (orderDate.getFullYear() === d.getFullYear() && order.status === "Completed")
+                        dashboard_stats.yearly_earnings += order.payableAmount;
+                    if (order.status != "Completed")
+                        dashboard_stats.pending_orders += 1;
+                    else
+                        bar_chart_stats[String(orderDate.getMonth())] += order.payableAmount;
+                    dashboard_stats.total_orders += 1;
+                });
+                res.render("business_home", { user, dashboard_stats, bar_chart_stats });
             } else {
                 //code if no user with session email was found
                 res.redirect('/logout');
@@ -189,6 +220,18 @@ exports.create_order = async function (req, res) {
         res.render("business_login", { flash: '' });
 }
 
+exports.order_update_page = async function (req, res) {
+    let session = req.session;
+    if (session.email && session.type === "business") {
+        let user = await shop_db.findOne({ email: session.email }).exec();
+        let order = await order_db.findOne({ _id: req.body.id }).exec();
+        res.render('order_update', { user, order })
+    }
+    else{
+        res.redirect('/logout');
+    }
+}
+
 exports.order_update = async function (req, res) {
     let session = req.session;
     if (session.email && session.type === "business") {
@@ -203,7 +246,6 @@ exports.order_update = async function (req, res) {
             updates: req.body.updates,
             customerPhone: req.body.phone,
             additionalNotes: req.body.notes,
-            profileID: req.body.id,
             updatedOn: dateObj
         };
         let customer = await customer_db.findOne({ phone: req.body.phone }).exec();
@@ -214,17 +256,6 @@ exports.order_update = async function (req, res) {
             if (err) return next(err);
             res.redirect("/business_orders");
         });
-    }
-    else
-        res.render("business_login", { flash: '' });
-};
-
-exports.order_update_page = async function (req, res) {
-    let session = req.session;
-    if (session.email && session.type === "business") {
-        let user = await shop_db.findOne({ email: session.email }).exec();
-        let order = await order_db.findById(req.body.id).exec();
-        res.render('order_update', { user, order });
     }
     else
         res.render("business_login", { flash: '' });
@@ -359,7 +390,7 @@ exports.customer_orders = async function (req, res) {
         })
     }
     else
-    res.redirect('/customer_login');
+        res.redirect('/customer_login');
 }
 
 exports.logout = function (req, res) {
