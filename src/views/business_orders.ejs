@@ -457,8 +457,18 @@
                                                                                                         %>
                                                                                         </td>
                                                                                         <td class="row">
-                                                                                            <a href="#editOrderModal" class="btn btn-primary" data-toggle="modal"><i
-                                                                                                class="fa-solid fa-small fa-pen"></i> <span></span></a>
+                                                                                            <form action="/update_order"
+                                                                                                method="post">
+                                                                                                <input type="hidden"
+                                                                                                    class="form-control"
+                                                                                                    value="<%= orders[i]._id %>"
+                                                                                                    name="id">
+                                                                                                <button
+                                                                                                    class="btn btn-primary"><i
+                                                                                                        class="fa-solid fa-small fa-pen"></i>
+                                                                                                    <span></span>
+                                                                                                </button>
+                                                                                            </form>
                                                                                             <br>
                                                                                             <form action="/delete_order"
                                                                                                 method="post">
@@ -474,102 +484,6 @@
                                                                                             </form>
                                                                                         </td>
                                                         </tr>
-            <!-- Edit Modal HTML -->
-            <div id="editOrderModal" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form method="post" action="/updateOrder">
-                            <input type="hidden" value="<%= orders[i]._id %>" name="id">
-                            <div class="modal-header">
-                                <h4 class="modal-title">Edit Order</h4>
-                                <button type="button" class="close" data-dismiss="modal"
-                                    aria-hidden="true">&times;</button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <label>Order Description</label>
-                                    <input type="text" class="form-control" name="desc" id="desc" value="<%=orders[i].orderDesc%>">
-                                </div>
-                                <div class="form-group">
-                                    <label>Customer Phone Number</label>
-                                    <input type="tel" class="form-control" name="phone" id="phone" value="<%=orders[i].customerPhone%>">
-                                </div>
-                                <div class="form-group">
-                                    <label>Order Due Date</label>
-                                    <%  function dateConvert(d){
-                                        let dt = d.toISOString();
-                                        dt = dt.substring(0, 16);
-                                        return dt;
-                                    }
-                                    %>
-                                    <input type="datetime-local" class="form-control" id="inputAddress" name="duedate" value="<%= dateConvert(orders[i].dueDate) %>">
-                                </div>
-                                <div class="form-group">
-                                    <label for="profile" class="form-label">Customer ID</label>
-                                    <% if (orders[i].profileID != null) {%>
-                                    <input type="text" class="form-control" name="profile" id="profile" value="<%= orders[i].profileID %>" readonly>
-                                    <% } else { %>
-                                    <input type="text" class="form-control" name="profile" id="profile" readonly>
-                                    <% } %>
-                                </div>
-                                <div class="form-group">
-                                    <label for="status" class="form-label">Status</label>
-                                    <select size="1" class="form-control" name="status" id="status">
-                                        <option value="<%= orders[i].status %>" selected><%= orders[i].status %></option>
-                                        <option value="Confirmed">Confirmed</option>
-                                        <option value="Under Process">Under Process</option>
-                                        <option value="Ready">Ready</option>
-                                        <option value="Needs Action">Needs Action</option>
-                                        <option value="Completed">Completed</option>
-                                        <option value="Cancelled">Cancelled</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Order Type</label>
-                                    <select size="3" class="form-control" name="ordertype" id="ordertype">
-                                        <option value="<%= orders[i].orderType %>" selected><%= orders[i].orderType %></option>
-                                        <option value="Books">Books</option>
-                                        <option value="Car & Automobiles">Car & Automobiles</option>
-                                        <option value="Clothing & Accessories">Clothing & Accessories</option>
-                                        <option value="Electronics">Electronics</option>
-                                        <option value="Grocery & Gourmet">Grocery & Gourmet</option>
-                                        <option value="Health & Personal Care">Health & Personal Care</option>
-                                        <option value="Home & Kitchen">Home & Kitchen</option>
-                                        <option value="Jewellery">Jewellery</option>
-                                        <option value="Musical Instruments">Musical Instruments</option>
-                                        <option value="Office Product">Office Product</option>
-                                        <option value="Shoes & Handbag">Shoes & Handbag</option>
-                                        <option value="Sports & Fitness">Sports & Fitness</option>
-                                        <option value="Toys & Games">Toys & Games</option>
-                                        <option value="Watches">Watches</option>
-                                        <option value="Books">Other</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Payment Method</label>
-                                    <input type="text" class="form-control" name="paymentMethod" id="paymentMethod" value="<%= orders[i].paymentMethod %>">
-                                </div>
-                                <div class="form-group">
-                                    <label>Payment Amount</label>
-                                    <input type="number" class="form-control" name="payableAmount" id="inputCity" value="<%= orders[i].payableAmount %>">
-                                </div>
-                                <div class="form-group">
-                                    <label for="updates" class="form-label">Updates</label>
-                                    <textarea class="form-control" name="updates" id="updates"><%= orders[i].updates %></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label>Additional Notes</label>
-                                    <textarea class="form-control" name="notes" id="notes"><%=orders[i].additionalNotes%></textarea>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                                <input type="submit" class="btn btn-success" value="Update">
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
                                                         <% } %>
                                                 </tbody>
                                             </table>
