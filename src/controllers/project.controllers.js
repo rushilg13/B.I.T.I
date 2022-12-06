@@ -44,6 +44,10 @@ exports.business_home = function (req, res) {
                     '10': 0,
                     '11': 0
                 };
+                let delivery_stats = {
+                    "On/Before Time Delivery": 0,
+                    "Delayed Delivery": 0
+                }
                 const d = new Date();
                 monthly_earnings_func = orders.map((order) => {
                     orderDate = new Date(order.dateOfOrder.toISOString());
@@ -53,11 +57,16 @@ exports.business_home = function (req, res) {
                         dashboard_stats.yearly_earnings += order.payableAmount;
                     if (order.status != "Completed")
                         dashboard_stats.pending_orders += 1;
-                    else
+                    else {
+                        if (order.deliveredDate.toISOString() <= d.toISOString()) delivery_stats["On/Before Time Delivery"] += 1;
+                        else delivery_stats["Delayed Delivery"] += 1;
                         bar_chart_stats[String(orderDate.getMonth())] += order.payableAmount;
+                    }
+
                     dashboard_stats.total_orders += 1;
                 });
-                res.render("business_home", { user, dashboard_stats, bar_chart_stats });
+                console.log(delivery_stats);
+                res.render("business_home", { user, dashboard_stats, bar_chart_stats, delivery_stats });
             } else {
                 //code if no user with session email was found
                 res.redirect('/logout');
@@ -227,7 +236,7 @@ exports.order_update_page = async function (req, res) {
         let order = await order_db.findOne({ _id: req.body.id }).exec();
         res.render('order_update', { user, order })
     }
-    else{
+    else {
         res.redirect('/logout');
     }
 }
@@ -248,6 +257,8 @@ exports.order_update = async function (req, res) {
             additionalNotes: req.body.notes,
             updatedOn: dateObj
         };
+        if (req.body.status === "Completed") updatedOrder.deliveredDate = new Date();
+        else updatedOrder.deliveredDate = null;
         let customer = await customer_db.findOne({ phone: req.body.phone }).exec();
         if (customer != null) {
             updatedOrder.profileID = customer._id;

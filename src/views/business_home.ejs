@@ -515,7 +515,7 @@
                                 <!-- Card Header - Dropdown -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Delivery Stats</h6>
                                     <div class="dropdown no-arrow">
                                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -535,17 +535,6 @@
                                 <div class="card-body">
                                     <div class="chart-pie pt-4 pb-2">
                                         <canvas id="myPieChart"></canvas>
-                                    </div>
-                                    <div class="mt-4 text-center small">
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-primary"></i> Direct
-                                        </span>
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-success"></i> Social
-                                        </span>
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-info"></i> Referral
-                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -800,27 +789,69 @@
         const d = new Date();
         const curr_month = d.getMonth() + 1;
         let ytd_months = []
-        for(let year = 1; year <= curr_month; year ++){
+        for (let year = 1; year <= curr_month; year++) {
             ytd_months.push(toMonthName(year));
         }
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ytd_months,
-                    datasets: [{
-                        label: 'Earnings YTD',
-                        data: [<%= Object.values(bar_chart_stats) %>],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ytd_months,
+                datasets: [{
+                    label: 'Earnings YTD',
+                    data: [<%= Object.values(bar_chart_stats) %>],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 255, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(201, 203, 207, 0.2)',
+                        'rgba(255, 0, 157, 0.2)',
+                        'rgba(76, 0, 153, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                        'rgb(153, 102, 255)',
+                        'rgb(201, 203, 207)',
+                        'rgb(255, 0, 157)',
+                        'rgb(76, 0, 153)'
+
+
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
                     }
                 }
-            });
+            }
+        });
+
+        const pie_ctx = document.getElementById('myPieChart');
+        new Chart(pie_ctx, {
+            type: 'pie',
+            data: {
+                labels: ["On/Before Time Delivery", "Delayed Delivery"],
+                datasets: [{
+                    label: 'Delivery Stats',
+                    data: [<%=Object.values(delivery_stats) %>],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.8)',
+                        'rgba(255, 159, 64, 0.8)',
+                    ]
+                }]
+            }
+        });
+
+
     </script>
 
 
