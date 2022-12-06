@@ -18,7 +18,7 @@ exports.business_signuppage = function (req, res) {
 exports.business_home = function (req, res) {
     let session = req.session;
     if (session.email && session.type === "business") {
-        shop_db.findOne({ email: session.email }, function (err, user) {
+        shop_db.findOne({ email: session.email }, async function (err, user) {
             if (err) {
                 //handle error here
                 console.error(err);
@@ -26,7 +26,23 @@ exports.business_home = function (req, res) {
 
             //if a user was found, that means the user's email matches the session email
             if (user) {
-                res.render("business_home", { user });
+                let business = await shop_db.findOne({ email: session.email }).exec();
+                let business_id = business._id;
+                let orders = await order_db.find({ shopID: business_id }).exec();
+                let dashboard_stats = { monthly_earnings: 0, yearly_earnings: 0, pending_orders: 0, total_orders: 0 };
+                const d = new Date();
+                monthly_earnings_func = orders.map((order) => {
+                    orderDate = new Date(order.dateOfOrder.toISOString());
+                    if (orderDate.getMonth() === d.getMonth())
+                        dashboard_stats.monthly_earnings += order.payableAmount;
+                    if (orderDate.getFullYear() === d.getFullYear())
+                        dashboard_stats.yearly_earnings += order.payableAmount;
+                    if (order.status != "Completed")
+                    dashboard_stats.pending_orders += 1;
+                    dashboard_stats.total_orders += 1;
+                });
+                console.log(dashboard_stats);
+                res.render("business_home", { user, dashboard_stats });
             } else {
                 //code if no user with session email was found
                 res.redirect('/logout');
@@ -347,7 +363,7 @@ exports.customer_orders = async function (req, res) {
         })
     }
     else
-    res.redirect('/customer_login');
+        res.redirect('/customer_login');
 }
 
 exports.logout = function (req, res) {
