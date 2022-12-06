@@ -419,11 +419,11 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Pending Orders
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Completed Orders
                                             </div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
-                                                    <% let pending_percentage = parseInt(dashboard_stats.pending_orders*100 / dashboard_stats.total_orders) %>
+                                                    <% let pending_percentage = parseInt( (dashboard_stats.total_orders-dashboard_stats.pending_orders)*100 / dashboard_stats.total_orders) %>
                                                     <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><%=pending_percentage%>%</div>
                                                 </div>
                                                 <div class="col">
