@@ -7,7 +7,8 @@ const session = require('express-session');
 require('dotenv').config()
 require('../passport');
 
-MONGO_PASSWORD = process.env.MONGO_PASSWORD
+MONGO_PASSWORD = process.env.MONGO_PASSWORD;
+DATABASE_NAME = process.env.DATABASE_NAME;
 
 mongoose.connect(`mongodb+srv://VIT_Admin:${MONGO_PASSWORD}@vitdiaries.tpuku.mongodb.net/${DATABASE_NAME}?retryWrites=true&w=majority`, {
     useNewUrlParser: true,
