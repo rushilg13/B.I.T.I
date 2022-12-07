@@ -9,7 +9,7 @@ require('../passport');
 
 MONGO_PASSWORD = process.env.MONGO_PASSWORD
 
-mongoose.connect(`mongodb+srv://VIT_Admin:${MONGO_PASSWORD}@vitdiaries.tpuku.mongodb.net/NodeJS-CRUD?retryWrites=true&w=majority`, {
+mongoose.connect(`mongodb+srv://VIT_Admin:${MONGO_PASSWORD}@vitdiaries.tpuku.mongodb.net/${DATABASE_NAME}?retryWrites=true&w=majority`, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
