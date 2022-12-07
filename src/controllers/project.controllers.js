@@ -75,7 +75,7 @@ exports.business_home = function (req, res) {
     }
     // res.send({ email: session.email }); // fix me. redirect to protected business home page
     else
-        res.render('business_signup', { flash: '' });
+        res.redirect('/logout');
 }
 
 exports.business_home_signup = function (req, res) {
