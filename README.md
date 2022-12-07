@@ -1,5 +1,9 @@
 # B.I.T.I - Bag It, Tag It
 
+Website Link
+------
+[Link to Deployed Webiste](https://b-i-t-i.onrender.com)
+
 ERD Diagram
 ------
 ![ER Diagram](ERD.jpg)
