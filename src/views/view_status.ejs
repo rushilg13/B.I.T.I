@@ -47,31 +47,80 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col-md-6">
                             <div class="form-wrap bg-white">
-                                <h4 class="btm-sep pb-3 mb-5" style="text-align: center;">Business Login</h4>
+                                <h4 class="pb-3" style="text-align: center;">Order Details</h4>
                                 <div class="row">
-                                    <div class="col-12">
-                                        <div class="form-group position-relative">
-                                            <span class="zmdi zmdi-account"></span>
-                                            <input type="email" name="email" id="email" class="form-control"
-                                                placeholder="Email Address" required>
-                                        </div>
-                                    </div>
-                                    <br><br>
-                                    <div class="col-12">
-                                        <div class="form-group position-relative">
-                                            <span class="zmdi zmdi-email"></span>
-                                            <input type="password" name="password" id="password" class="form-control"
-                                                placeholder="Password" required>
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <div class="col-12 text-lg-right">
-                                        <a href="#" class="c-black">Forgot password ?</a>
-                                    </div>
-                                    <div class="col-12 mt-30">
-                                        <input type="submit" style="margin: 0 auto; display: block;" id="submit"
-                                            class="btn btn-lg btn-custom btn-dark btn-block" value="Sign In">
-                                    </div>
+                                    <table>
+                                        <tr>
+                                            <td>Order ID</td>
+                                            <td>
+                                                <%=order._id%>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Order Description</td>
+                                            <td>
+                                                <%=order.orderDesc%>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Store Name</td>
+                                            <td>
+                                                <%=business.name%>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Due Date</td>
+                                            <td>
+                                                <%let due=renderDate(order.dueDate)%>
+                                                    <%= due[0]%>/<%= due[1]%>/<%= due[2]%>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Order Type</td>
+                                            <td>
+                                                <%=order.orderType%>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Payment Method</td>
+                                            <td>
+                                                <%=order.paymentMethod%>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Payable Amount</td>
+                                            <td>
+                                                <%=order.payableAmount%>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Order Type</td>
+                                            <td>
+                                                <%=order.orderType%>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Additional Notes</td>
+                                            <td>
+                                                <%=order.additionalNotes%>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Order Placed On</td>
+                                            <td>
+                                                <%let doo=renderDate(order.dateOfOrder)%>
+                                                <%= doo[0]%>/<%= doo[1]%>/<%= doo[2]%>
+                                            </td>
+                                        </tr>
+                                        <% if(order.status === "Completed") {%>
+                                        <tr>
+                                            <td>Order Completed On</td>
+                                            <td>
+                                                <%let dd=renderDate(order.dateOfOrder)%>
+                                                <%= dd[0]%>/<%= dd[1]%>/<%= dd[2]%>                                            </td>
+                                        </tr>
+                                        <% } %>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -117,8 +166,8 @@
                                         <%= order.updates %>
                                     </span>
                                 </h5>
-                                <% let dmy = renderDate(order.updatedOn) %>
-                                Last Updated On <%=dmy[0]%>/<%=dmy[1]%>/<%=dmy[2]%>
+                                <% let dmy=renderDate(order.updatedOn) %>
+                                    Last Updated On <%=dmy[0]%>/<%=dmy[1]%>/<%=dmy[2]%>
                             </div>
                         </div>
                     </div>
@@ -132,13 +181,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
         crossorigin="anonymous"></script>
-    <%
-        function renderDate(_date) {
-            _date = _date.toString(); let date = new Date(_date);
-            _date = date.toISOString().substring(0, 10); let y = _date.substring(0, 4);
-            let m = _date.substring(5, 7); let d = _date.substring(8); return [d, m, y];
-        }
-        %>
+    <% function renderDate(_date) { _date=_date.toString(); let date=new Date(_date);
+        _date=date.toISOString().substring(0, 10); let y=_date.substring(0, 4); let m=_date.substring(5, 7); let
+        d=_date.substring(8); return [d, m, y]; } %>
 </body>
 
 </html>

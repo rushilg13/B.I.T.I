@@ -499,8 +499,9 @@ exports.customer_orders = async function (req, res) {
 }
 
 exports.view_status = function (req, res) {
-    order_db.findOne({ _id: req.params.id }, function (err, order) {
-        res.render('view_status', { order });
+    order_db.findOne({ _id: req.params.id }, async function (err, order) {
+        let business = await shop_db.findOne({ _id: order.shopID }).exec();
+        res.render('view_status', { order, business });
     })
 }
 
