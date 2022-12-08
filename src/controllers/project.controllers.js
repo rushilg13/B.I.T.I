@@ -29,7 +29,7 @@ exports.business_home = function (req, res) {
                 let business = await shop_db.findOne({ email: session.email }).exec();
                 let business_id = business._id;
                 let orders = await order_db.find({ shopID: business_id }).exec();
-                upcoming_orders = [];
+                let upcoming_orders = [];
                 const d = new Date();
                 orders_loop = orders.map((order) => {
                     orderDate = new Date(order.dueDate.toISOString());
@@ -44,8 +44,9 @@ exports.business_home = function (req, res) {
                         upcoming_orders.push(order);
                     }
                 });
+                upcoming_orders = upcoming_orders.sort((a, b) => Number(b.urgent) - Number(a.urgent));
                 console.log(upcoming_orders);
-                res.render("business_home", { user });
+                res.render("business_home", { user, upcoming_orders });
             } else {
                 //code if no user with session email was found
                 res.redirect('/logout');

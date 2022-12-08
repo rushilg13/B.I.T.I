@@ -431,10 +431,13 @@
                                                                             </td>
                                                                             <% } %>
                                                                                 <td>
+                                                                                    <% if(orders[i].updatedOn !== null) {%>
                                                                                     <% date=renderDate(orders[i].updatedOn)
                                                                                         %>
                                                                                         <%= date[0] %>/<%= date[1] %>/
                                                                                                 <%= date[2] %>
+                                                                                                <%}%>
+                                                                                    Not yet updated
                                                                                 </td>
                                                                                 <td>
                                                                                     <% date=renderDate(orders[i].dueDate)
@@ -486,7 +489,11 @@
                                                                                                     </div>
                                                                                                     <div class="form-group">
                                                                                                         <label>Updated On</label>
+                                                                                                        <% if (orders[i].updatedOn != null) {%>
                                                                                                         <input type="datetime-local" name="updatedOn" id="updatedOn" class="form-control" value="<%= dateConvert(orders[i].updatedOn) %>"
+                                                                                                            readonly>
+                                                                                                        <%} else {%>
+                                                                                                            <input type="datetime-local" name="updatedOn" id="updatedOn" class="form-control" value="Not Yet Updated"
                                                                                                             readonly>
                                                                                                     </div>
                                                                                                     <div class="form-group">
@@ -509,7 +516,7 @@
                                                                                                     </div>
                                                                                                     <div class="form-group">
                                                                                                         <label>Payment Amount</label>
-                                                                                                        <input type="number" id="paymentAmount" name="paymentAmount" class="form-control" value="<%= orders[i].payableAmount %>"
+                                                                                                        <input type="number" id="paymentAmount" name="paymentAmount" class="form-control" value="₹<%= orders[i].payableAmount %>"
                                                                                                             readonly>
                                                                                                     </div>
                                                                                                     <div class="form-group">
@@ -610,14 +617,6 @@
         let num = getRandomInt(1, 50);
         newImg.src = `https://xsgames.co/randomusers/assets/avatars/pixel/${num}.jpg`;
     </script>
-
-    <!-- Render charts. plugins not required. maybe use apis? -->
-    <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
 
 </body>
 
