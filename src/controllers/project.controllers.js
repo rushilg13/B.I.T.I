@@ -307,7 +307,46 @@ exports.chart_page = async function (req, res) {
         res.render('chart', { user });
     } else if (session.email && session.type === "business") {
         let user = await shop_db.findOne({ email: session.email }).exec();
-        res.render('charts', { user });
+        let business = user;
+        let business_id = business._id;
+        let orders = await order_db.find({ shopID: business_id }).exec();
+        // let dashboard_stats = { monthly_earnings: 0, yearly_earnings: 0, pending_orders: 0, total_orders: 0 };
+        let bar_chart_stats = {
+            '0': 0,
+            '1': 0,
+            '2': 0,
+            '3': 0,
+            '4': 0,
+            '5': 0,
+            '6': 0,
+            '7': 0,
+            '8': 0,
+            '9': 0,
+            '10': 0,
+            '11': 0
+        };
+        let delivery_stats = {
+            "On/Before Time Delivery": 0,
+            "Delayed Delivery": 0
+        }
+        const d = new Date();
+        monthly_earnings_func = orders.map((order) => {
+            orderDate = new Date(order.dateOfOrder.toISOString());
+            // if (orderDate.getMonth() === d.getMonth() && order.status === "Completed")
+            //     dashboard_stats.monthly_earnings += order.payableAmount;
+            // if (orderDate.getFullYear() === d.getFullYear() && order.status === "Completed")
+            //     dashboard_stats.yearly_earnings += order.payableAmount;
+            // if (order.status != "Completed")
+            //     dashboard_stats.pending_orders += 1;
+            // else 
+            {
+                if (order.deliveredDate.toISOString() <= d.toISOString()) delivery_stats["On/Before Time Delivery"] += 1;
+                else delivery_stats["Delayed Delivery"] += 1;
+                bar_chart_stats[String(orderDate.getMonth())] += order.payableAmount;
+            }
+        });
+        console.log(delivery_stats);
+        res.render('charts', { user, bar_chart_stats, delivery_stats });
     }
     else
         res.redirect('/logout')
