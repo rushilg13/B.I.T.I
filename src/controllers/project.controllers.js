@@ -45,7 +45,6 @@ exports.business_home = function (req, res) {
                     }
                 });
                 upcoming_orders = upcoming_orders.sort((a, b) => Number(b.urgent) - Number(a.urgent));
-                console.log(upcoming_orders);
                 res.render("business_home", { user, upcoming_orders });
             } else {
                 //code if no user with session email was found
@@ -268,7 +267,7 @@ exports.delete_order = function (req, res) {
     if (session.email && session.type === "business") {
         order_db.findByIdAndDelete(req.body.id, function (err, docs) {
             if (err) {
-                console.log(err)
+                console.error(err)
             }
             else {
                 res.redirect("/business_orders");
@@ -330,13 +329,13 @@ exports.chart_page = async function (req, res) {
                 dashboard_stats.pending_orders += 1;
             if (order.status === "Completed") {
                 paymentMethod_stats[order.paymentMethod] += 1;
-                if (order.deliveredDate.toISOString() <= d.toISOString())
+                if (order.deliveredDate.valueOf() <= order.dueDate.valueOf())
                     delivery_stats["On/Before Time Delivery"] += 1;
                 else delivery_stats["Delayed Delivery"] += 1;
                 bar_chart_stats[String(orderDate.getMonth())] += order.payableAmount;
             }
         });
-        console.log(dashboard_stats);
+
         res.render('charts', { user, bar_chart_stats, delivery_stats, paymentMethod_stats, dashboard_stats });
     }
     else
@@ -459,14 +458,14 @@ exports.customer_home = function (req, res) {
                     if (order.status != "Completed")
                         dashboard_stats.pending_orders += 1;
                     else {
-                        if (order.deliveredDate.toISOString() <= d.toISOString()) delivery_stats["On/Before Time Delivery"] += 1;
+                        if (order.deliveredDate.valueOf() <= order.dueDate.valueOf())
+                            delivery_stats["On/Before Time Delivery"] += 1;
                         else delivery_stats["Delayed Delivery"] += 1;
                         bar_chart_stats[String(orderDate.getMonth())] += order.payableAmount;
                     }
 
                     dashboard_stats.total_orders += 1;
                 });
-                console.log(delivery_stats);
                 res.render('customer_home', { user, dashboard_stats, bar_chart_stats, delivery_stats });
             } else {
                 res.redirect('/logout');
