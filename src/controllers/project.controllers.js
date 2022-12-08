@@ -379,12 +379,51 @@ exports.customer_home_login = function (req, res) {
 exports.customer_home = function (req, res) {
     let session = req.session;
     if (session.email && session.type === 'customer') {
-        customer_db.findOne({ email: session.email }, function (err, user) {
+        customer_db.findOne({ email: session.email }, async function (err, user) {
             if (err) {
                 console.error(err);
             }
             if (user) {
-                res.render('customer_home', { user });
+                let user_id = user._id;
+                let orders = await order_db.find({ profileID: user_id }).exec();
+                let dashboard_stats = { monthly_expenditure: 0, yearly_expenditure: 0, pending_orders: 0, total_orders: 0 };
+                let bar_chart_stats = {
+                    '0': 0,
+                    '1': 0,
+                    '2': 0,
+                    '3': 0,
+                    '4': 0,
+                    '5': 0,
+                    '6': 0,
+                    '7': 0,
+                    '8': 0,
+                    '9': 0,
+                    '10': 0,
+                    '11': 0
+                };
+                let delivery_stats = {
+                    "On/Before Time Delivery": 0,
+                    "Delayed Delivery": 0
+                }
+                const d = new Date();
+                monthly_earnings_func = orders.map((order) => {
+                    orderDate = new Date(order.dateOfOrder.toISOString());
+                    if (orderDate.getMonth() === d.getMonth() && order.status === "Completed")
+                        dashboard_stats.monthly_expenditure += order.payableAmount;
+                    if (orderDate.getFullYear() === d.getFullYear() && order.status === "Completed")
+                        dashboard_stats.yearly_expenditure += order.payableAmount;
+                    if (order.status != "Completed")
+                        dashboard_stats.pending_orders += 1;
+                    else {
+                        if (order.deliveredDate.toISOString() <= d.toISOString()) delivery_stats["On/Before Time Delivery"] += 1;
+                        else delivery_stats["Delayed Delivery"] += 1;
+                        bar_chart_stats[String(orderDate.getMonth())] += order.payableAmount;
+                    }
+
+                    dashboard_stats.total_orders += 1;
+                });
+                console.log(delivery_stats);
+                res.render('customer_home', { user, dashboard_stats, bar_chart_stats, delivery_stats });
             } else {
                 res.redirect('/logout');
             };
