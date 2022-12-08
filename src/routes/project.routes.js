@@ -18,6 +18,15 @@ router.post('/delete_order', project_controller.delete_order);
 router.post('/update_order', project_controller.order_update_page); // from business_orders page passes id of order
 router.post('/updateOrder', project_controller.order_update); // from update order page passes updated order
 
+router.get('/charts', project_controller.chart_page);
+
+router.get("/customer_signup", project_controller.customer_signuppage);
+router.post("/customer_home_signup", project_controller.customer_home_signup);
+router.get("/customer_login", project_controller.customer_loginpage);
+router.post("/customer_home_login", project_controller.customer_home_login);
+router.get("/customer_orders", project_controller.customer_orders);
+router.get("/customer_home", project_controller.customer_home);
+router.get('/logout', project_controller.logout);
 
 router.get('/google', passport.authenticate('google', {
     scope: ['email', 'profile']
@@ -35,16 +44,5 @@ router.get('/google/callback', passport.authenticate('google', {
     response.redirect("/business_home");
     response.end();
 });
-
-
-router.get("/customer_signup", project_controller.customer_signuppage);
-router.post("/customer_home_signup", project_controller.customer_home_signup);
-router.get("/customer_login", project_controller.customer_loginpage);
-router.post("/customer_home_login", project_controller.customer_home_login);
-router.get("/customer_orders", project_controller.customer_orders);
-
-router.get("/customer_home", project_controller.customer_home);
-
-router.get('/logout', project_controller.logout);
 
 module.exports = router;

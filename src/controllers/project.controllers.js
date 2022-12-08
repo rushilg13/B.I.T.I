@@ -299,6 +299,20 @@ exports.delete_order = function (req, res) {
         res.render("business_login", { flash: '' });
 };
 
+
+exports.chart_page = async function (req, res) {
+    let session = req.session;
+    if (session.email && session.type === "customer") {
+        let user = await customer_db.findOne({ email: session.email }).exec();
+        res.render('chart', { user });
+    } else if (session.email && session.type === "business") {
+        let user = await shop_db.findOne({ email: session.email }).exec();
+        res.render('charts', { user });
+    }
+    else
+        res.redirect('/logout')
+}
+
 exports.customer_signuppage = function (req, res) {
     let session = req.session;
     if (session.email && session.type === "customer")
