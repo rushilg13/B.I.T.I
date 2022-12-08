@@ -437,7 +437,9 @@
                                                                                         <%= date[0] %>/<%= date[1] %>/
                                                                                                 <%= date[2] %>
                                                                                                 <%}%>
-                                                                                        
+                                                                                    <% if(orders[i].updatedOn === null) {%>
+                                                                                            Not Updated Yet
+                                                                                                <%}%>
                                                                                 </td>
                                                                                 <td>
                                                                                     <% date=renderDate(orders[i].dueDate)
@@ -446,9 +448,10 @@
                                                                                                 <%= date[2] %>
                                                                                 </td>
                                                                                 <td class="row">
-                                                                                    <a href="#viewModal" class="btn btn-info" data-toggle="modal"><i
+                                                                                    <a href="/view-order-status/<%=orders[i]._id%>" class="btn btn-info"><i
                                                                                         class="fa-solid fa-small fa-eye"></i> <span> View</span></a>
                                                                                 </td>
+                                                                                <!--
                                                                                 <div id="viewModal" class="modal fade">
                                                                                     <%  function dateConvert(d){
                                                                                         let dt = d.toISOString();
@@ -532,6 +535,7 @@
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
+                                                                                -->
                                                 </tr>
                                                 <% } %>
                                         </tbody>

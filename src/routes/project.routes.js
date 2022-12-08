@@ -28,6 +28,8 @@ router.get("/customer_orders", project_controller.customer_orders);
 router.get("/customer_home", project_controller.customer_home);
 router.get('/logout', project_controller.logout);
 
+router.get('/view-order-status/:id', project_controller.view_status);
+
 router.get('/google', passport.authenticate('google', {
     scope: ['email', 'profile']
 }));
