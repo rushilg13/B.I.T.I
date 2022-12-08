@@ -363,46 +363,58 @@
                 <!-- End of Topbar -->
 
                 <!-- Start of Main Content -->
-                <form class="row g-3" style="border: 1px solid #e3e6f0; border-spacing: 5px; padding: 50px;" action="/updateOrder" method="post" >
+                <form class="row g-3" style="border: 1px solid #e3e6f0; border-spacing: 5px; padding: 50px;"
+                    action="/updateOrder" method="post">
                     <input type="hidden" value="<%= order._id %>" name="id">
                     <div class="col-md-6">
                         <label for="inputEmail4" class="form-label">Order Description</label>
-                        <input type="text" class="form-control" name="desc" id="inputEmail4" value="<%=order.orderDesc%>">
+                        <input type="text" class="form-control" name="desc" id="inputEmail4"
+                            value="<%=order.orderDesc%>">
                     </div>
                     <div class="col-md-3">
                         <label for="inputPassword4" class="form-label">Customer Phone Number</label>
-                        <input type="tel" class="form-control" name="phone" id="inputPassword4" value="<%=order.customerPhone%>">
+                        <input type="tel" class="form-control" name="phone" id="inputPassword4"
+                            value="<%=order.customerPhone%>">
                     </div>
                     <div class="col-md-3">
                         <label for="inputAddress" class="form-label">Order Due Date</label>
-                        <%  function dateConvert(d){
-                            let dt = d.toISOString();
-                            dt = dt.substring(0, 16);
-                            return dt;
-                        }
-                        %>
-                        <input type="datetime-local" class="form-control" id="inputAddress" name="duedate" value="<%= dateConvert(order.dueDate) %>">
+                        <% function dateConvert(d){ let dt=d.toISOString(); dt=dt.substring(0, 16); return dt; } %>
+                            <input type="datetime-local" class="form-control" id="inputAddress" name="duedate"
+                                value="<%= dateConvert(order.dueDate) %>">
                     </div>
                     <div class="col-md-4">
                         <label for="profile" class="form-label">Customer ID</label>
-                        <% if (order.profileID != null) {%>
-                        <input type="text" class="form-control" name="profile" id="profile" value="<%= order.profileID %>">
-                        <% } else { %>
-                        <input type="text" class="form-control" name="profile" id="profile">
-                        <% } %>
+                        <% if (order.profileID !=null) {%>
+                            <input type="text" class="form-control" name="profile" id="profile"
+                                value="<%= order.profileID %>">
+                            <% } else { %>
+                                <input type="text" class="form-control" name="profile" id="profile">
+                                <% } %>
                     </div>
                     <div class="col-md-3">
                         <label for="inputCity" class="form-label">Payment Method</label>
-                        <input type="text" class="form-control" name="paymentMethod" id="inputCity" value="<%= order.paymentMethod %>">
+                        <select size="1" class="form-control" name="paymentMethod" id="inputCity">
+                            <option value="<%= order.paymentMethod %>" selected><%= order.paymentMethod %></option>
+                            <option value="Credit Card">Credit Card</option>
+                            <option value="Debit Card">Debit Card</option>
+                            <option value="Cash">Cash</option>
+                            <option value="UPI">UPI</option>
+                            <option value="Bank Transfer">Bank Transfer</option>
+                            <option value="Online Wallets">Online Wallets</option>
+                            <option value="Other">Other</option>
+                        </select>
                     </div>
                     <div class="col-md-3">
                         <label for="inputState" class="form-label">Payable Amount</label>
-                        <input type="number" class="form-control" name="payableAmount" id="inputCity" value="<%= order.payableAmount %>">
+                        <input type="number" class="form-control" name="payableAmount" id="inputCity"
+                            value="<%= order.payableAmount %>">
                     </div>
                     <div class="col-md-2">
                         <label for="inputZip" class="form-label">Status</label>
                         <select size="1" class="form-control" name="status" id="inputZip">
-                            <option value="<%= order.status %>" selected><%= order.status %></option>
+                            <option value="<%= order.status %>" selected>
+                                <%= order.status %>
+                            </option>
                             <option value="Confirmed">Confirmed</option>
                             <option value="Under Process">Under Process</option>
                             <option value="Ready">Ready</option>
@@ -422,7 +434,9 @@
                     <div class="col-md-4">
                         <label for="inputAddress2" class="form-label">Order Type</label>
                         <select size="4" class="form-control" name="ordertype" id="ordertype">
-                            <option value="<%= order.orderType %>" selected><%= order.orderType %></option>
+                            <option value="<%= order.orderType %>" selected>
+                                <%= order.orderType %>
+                            </option>
                             <option value="Books">Books</option>
                             <option value="Car & Automobiles">Car & Automobiles</option>
                             <option value="Clothing & Accessories">Clothing & Accessories</option>
