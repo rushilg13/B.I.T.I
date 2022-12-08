@@ -34,13 +34,13 @@ exports.business_home = function (req, res) {
                 orders_loop = orders.map((order) => {
                     orderDate = new Date(order.dueDate.toISOString());
                     if (order.dueDate.toISOString() <= d.toISOString() && order.status != "Completed") {
-                        let urgent = true ;
-                        order = {...order._doc, urgent};
+                        let urgent = true;
+                        order = { ...order._doc, urgent };
                         upcoming_orders.push(order);
                     }
                     else if (orderDate.getMonth() === d.getMonth() && order.status != "Completed") {
-                        let urgent = false ;
-                        order = {...order._doc, urgent};
+                        let urgent = false;
+                        order = { ...order._doc, urgent };
                         upcoming_orders.push(order);
                     }
                 });
@@ -496,6 +496,12 @@ exports.customer_orders = async function (req, res) {
     }
     else
         res.redirect('/customer_login');
+}
+
+exports.view_status = function (req, res) {
+    order_db.findOne({ _id: req.params.id }, function (err, order) {
+        res.render('view_status', { order });
+    })
 }
 
 exports.logout = function (req, res) {
