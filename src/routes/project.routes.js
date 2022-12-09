@@ -25,8 +25,9 @@ router.get("/customer_signup", project_controller.customer_signuppage);
 router.post("/customer_home_signup", project_controller.customer_home_signup);
 router.get("/customer_login", project_controller.customer_loginpage);
 router.post("/customer_home_login", project_controller.customer_home_login);
-router.get("/customer_orders", project_controller.customer_orders);
 router.get("/customer_home", project_controller.customer_home);
+router.post("/update_customer_profile", project_controller.update_customer_profile);
+router.get("/customer_orders", project_controller.customer_orders);
 router.get('/logout', project_controller.logout);
 
 router.get('/view-order-status/:id', project_controller.view_status);
