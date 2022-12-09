@@ -12,6 +12,7 @@ router.post("/business_home_signup", project_controller.business_home_signup);
 router.get("/business_login", project_controller.business_loginpage);
 router.post("/business_home_login", project_controller.business_home_login);
 router.get("/business_home", project_controller.business_home);
+router.post("/update_business_profile", project_controller.update_business_profile);
 router.get("/business_orders", project_controller.business_orders);
 router.post("/create_order", project_controller.create_order);
 router.post('/delete_order', project_controller.delete_order);

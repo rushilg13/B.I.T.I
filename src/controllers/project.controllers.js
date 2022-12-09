@@ -57,6 +57,26 @@ exports.business_home = function (req, res) {
         res.redirect('/logout');
 }
 
+
+exports.update_business_profile = function (req, res) {
+    let session = req.session;
+    if (session.email && session.type === "business") {
+        let updatedProfile = {
+            name: req.body.name,
+            phone: req.body.phone,
+            email: req.body.email,
+            password: req.body.password,
+            address: req.body.address
+        };
+        shop_db.findByIdAndUpdate(req.body.id, updatedProfile, function (err, order) {
+            if (err) console.error(err);
+            res.redirect("/business_home");
+        });
+    }
+    else
+        res.redirect('/logout');
+}
+
 exports.business_home_signup = function (req, res) {
     let business = new shop_db({
         name: req.body.name,
