@@ -109,17 +109,30 @@
                                             <td>Order Placed On</td>
                                             <td>
                                                 <%let doo=renderDate(order.dateOfOrder)%>
-                                                <%= doo[0]%>/<%= doo[1]%>/<%= doo[2]%>
+                                                    <%= doo[0]%>/<%= doo[1]%>/<%= doo[2]%>
                                             </td>
                                         </tr>
-                                        <% if(order.status === "Completed") {%>
-                                        <tr>
-                                            <td>Order Completed On</td>
-                                            <td>
-                                                <%let dd=renderDate(order.dateOfOrder)%>
-                                                <%= dd[0]%>/<%= dd[1]%>/<%= dd[2]%>                                            </td>
-                                        </tr>
-                                        <% } %>
+                                        <% if(order.status==="Completed" ) {%>
+                                            <tr>
+                                                <td>Order Completed On</td>
+                                                <td>
+                                                    <%let dd=renderDate(order.dateOfOrder)%>
+                                                        <%= dd[0]%>/<%= dd[1]%>/<%= dd[2]%>
+                                                </td>
+                                            </tr>
+                                            <% } %>
+                                                <tr>
+                                                    <td>Contact the Business at </td>
+                                                    <td>
+                                                        <form action="/view-business/<%=business._id%>" method="get">
+                                                            <button class="btn btn-sm btn-primary">
+                                                                <i class="zmdi zmdi-store">
+                                                                    <%=business.name%>
+                                                                </i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
                                     </table>
                                 </div>
                             </div>
@@ -162,18 +175,18 @@
                                 </div>
                                 <h3 class="c-black">Updates</h3>
                                 <h5 class="c-black mb-4 mt-n1">
-                                    <% if (order.updates.trim() != "") {%>
+                                    <% if (order.updates.trim() !="" ) {%>
                                         <span class="badge rounded-pill text-bg-dark">
                                             <%= order.updates %>
                                         </span>
                                         <% } else { %>
                                             No Updates Yet!
-                                        <% } %>
+                                            <% } %>
                                 </h5>
-                                <% if(order.updatedOn != null) {%>
-                                <% let dmy=renderDate(order.updatedOn); let hm = renderTime(order.updatedOn) %>
-                                    Last Updated On <%=dmy[0]%>/<%=dmy[1]%>/<%=dmy[2]%> at <%=hm[0]%>:<%=hm[1]%>
-                                <% } %>
+                                <% if(order.updatedOn !=null) {%>
+                                    <% let dmy=renderDate(order.updatedOn); let hm=renderTime(order.updatedOn) %>
+                                        Last Updated On <%=dmy[0]%>/<%=dmy[1]%>/<%=dmy[2]%> at <%=hm[0]%>:<%=hm[1]%>
+                                                            <% } %>
                             </div>
                         </div>
                     </div>
@@ -189,15 +202,8 @@
         crossorigin="anonymous"></script>
     <% function renderDate(_date) { _date=_date.toString(); let date=new Date(_date);
         _date=date.toISOString().substring(0, 10); let y=_date.substring(0, 4); let m=_date.substring(5, 7); let
-        d=_date.substring(8); return [d, m, y]; } 
-        
-        function renderTime(dateObj){
-            // const dateObj = _date.toISOString();
-            const hour = dateObj.getUTCHours();
-            const minute = dateObj.getUTCMinutes();
-            return [hour, minute];
-        }
-        %>
+        d=_date.substring(8); return [d, m, y]; } function renderTime(dateObj){ // const dateObj=_date.toISOString();
+        const hour=dateObj.getUTCHours(); const minute=dateObj.getUTCMinutes(); return [hour, minute]; } %>
 </body>
 
 </html>

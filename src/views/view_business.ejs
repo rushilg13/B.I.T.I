@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>B.I.T.I - Bag It, Tag, It</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="../img/logo.png" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="../lib/animate/animate.min.css" rel="stylesheet">
+    <link href="../lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <!-- Template Stylesheet -->
+    <link href="../css/signup.css" rel="stylesheet">
+
+    <!-- Material Design font Stylesheet -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css"
+        integrity="sha256-3sPp8BkKUE7QyPSl6VfBByBroQbKxKG7tsusY2mhbVY=" crossorigin="anonymous" />
+
+</head>
+
+<style>
+    .checked{
+        color: gold;
+    }
+</style>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-11 mt-60 mx-md-auto">
+                <div class="login-box bg-white pl-lg-5 pl-0">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col-md-6">
+                            <div class="form-wrap bg-white">
+                                <h4 class="pb-3" style="text-align: center;">Business Details</h4>
+                                <div class="row">
+                                    <table>
+                                        <tr>
+                                            <td><strong>Business Name</strong></td>
+                                            <td>
+                                                <%=shop.name%>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Business Email</strong></td>
+                                            <td>
+                                                <%=shop.email%>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Contact Number</strong></td>
+                                            <td>
+                                                <%=shop.phone%>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Business Address</strong></td>
+                                            <td>
+                                                <%=shop.address%>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Business categories</strong></td>
+                                            <td>
+                                                <%=shop.categories%>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="content text-center">
+                                <div class="border-bottom pb-5 mb-5">
+                                    <h3 class="c-black">Business Rating</h3>
+
+                                    <%let rate = shop.rating%>
+                                    <h5 id="stars"></h5>
+                                        
+                                </div>
+                                <h3 class="c-black">Business Reviews</h3>
+                                <h5 class="c-black mb-4 mt-n1">
+                                    <%=shop.reviews%>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+        integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+    <script>
+        let rates = <%=rate%>;
+        let text = '<span class="fa fa-star checked"></span>';
+        let code = text.repeat(rates);
+        document.getElementById('stars').innerHTML += code;
+    </script>
+</body>
+
+</html>

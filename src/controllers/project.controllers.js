@@ -298,6 +298,11 @@ exports.delete_order = function (req, res) {
         res.render("business_login", { flash: '' });
 };
 
+exports.view_business = function (req, res) {
+    shop_db.findOne({ _id: req.params.id }, function (err, shop) {
+        res.render('view_business', { shop });
+    });
+}
 
 exports.chart_page = async function (req, res) {
     let session = req.session;
@@ -602,7 +607,7 @@ exports.view_status = function (req, res) {
     order_db.findOne({ _id: req.params.id }, async function (err, order) {
         let business = await shop_db.findOne({ _id: order.shopID }).exec();
         res.render('view_status', { order, business });
-    })
+    });
 }
 
 exports.logout = function (req, res) {

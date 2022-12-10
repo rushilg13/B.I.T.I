@@ -18,6 +18,7 @@ router.post("/create_order", project_controller.create_order);
 router.post('/delete_order', project_controller.delete_order);
 router.post('/update_order', project_controller.order_update_page); // from business_orders page passes id of order
 router.post('/updateOrder', project_controller.order_update); // from update order page passes updated order
+router.get('/view-business/:id', project_controller.view_business);
 
 router.get('/charts', project_controller.chart_page);
 
