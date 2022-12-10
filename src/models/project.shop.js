@@ -7,7 +7,7 @@ const shopSchema = new Schema({
     email: String,
     rating: {type: Number, default: 0},
     numOfRating: {type: Number, default: 0},
-    reviews: [{ body: String, date: Date, negpos: String }],
+    reviews: [{ name: String, email: String, body: String, date: Date }],
     phone: String,
     address: String,
     password: String,

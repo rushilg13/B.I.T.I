@@ -39,7 +39,7 @@
 </head>
 
 <style>
-    .checked{
+    .checked {
         color: gold;
     }
 </style>
@@ -95,14 +95,21 @@
                                 <div class="border-bottom pb-5 mb-5">
                                     <h3 class="c-black">Business Rating</h3>
 
-                                    <%let rate = shop.rating%>
-                                    <h5 id="stars"></h5>
-                                        
+                                    <%let rate=shop.rating%>
+                                        <h5 id="stars"></h5>
+
                                 </div>
                                 <h3 class="c-black">Business Reviews</h3>
                                 <h5 class="c-black mb-4 mt-n1">
                                     <%=shop.reviews%>
                                 </h5>
+                                <form action="/add-review/<%=shop._id%>" method="get">
+                                    <button class="btn btn-sm btn-primary">
+                                        <i class="zmdi zmdi-comment">
+                                            Add a Review
+                                        </i>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>

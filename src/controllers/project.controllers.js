@@ -1,3 +1,4 @@
+const exp = require("constants");
 const path = require("path");
 const customer_db = require('../models/project.customer');
 const order_db = require('../models/project.order');
@@ -302,6 +303,28 @@ exports.view_business = function (req, res) {
     shop_db.findOne({ _id: req.params.id }, function (err, shop) {
         res.render('view_business', { shop });
     });
+}
+
+exports.add_review = function (req, res) {
+    shop_db.findOne({ _id: req.params.id }, function (err, shop) {
+        res.render('business_review', { shop });
+    });
+}
+
+exports.submit_review = async function (req, res) {
+    let d = new Date();
+    let business = await shop_db.find({ _id: req.body.id }).exec();
+    let curr_reviews = business[0].reviews;
+    let curr_rating = business[0].rating;
+    let curr_numOfRating = business[0].numOfRating;
+    curr_rating = (curr_rating * curr_numOfRating) + parseInt(req.body.rate_value);
+    curr_numOfRating += 1;
+    curr_rating = Math.round(curr_rating / curr_numOfRating);
+    let review = { name: req.body.name, email: req.body.email, body: req.body.msg, date: d };
+    curr_reviews.push(review);
+    await shop_db.findByIdAndUpdate(req.body.id, { reviews: curr_reviews, numOfRating: curr_numOfRating, rating: curr_rating }).exec();
+    let link = "/view-business/" + req.body.id;
+    res.redirect(link);
 }
 
 exports.chart_page = async function (req, res) {
