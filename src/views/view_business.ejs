@@ -92,7 +92,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="content text-center">
-                                <div class="border-bottom pb-5 mb-5">
+                                <div class="border-bottom pb-5 mb-3">
                                     <h3 class="c-black">Business Rating</h3>
 
                                     <%let rate=shop.rating%>
@@ -101,7 +101,9 @@
                                 </div>
                                 <h3 class="c-black">Business Reviews</h3>
                                 <h5 class="c-black mb-4 mt-n1">
-                                    <%=shop.reviews%>
+                                    <% let rev = shop.reviews[shop.reviews.length - 1] %>
+                                    <i>"<%=rev.body%>"</i>
+                                    <p style="text-align: right;padding-right: 10px;">~<%=rev.name%></p>
                                 </h5>
                                 <form action="/add-review/<%=shop._id%>" method="get">
                                     <button class="btn btn-sm btn-primary">
@@ -110,6 +112,7 @@
                                         </i>
                                     </button>
                                 </form>
+                                <br>
                             </div>
                         </div>
                     </div>
