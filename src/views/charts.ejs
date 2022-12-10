@@ -30,23 +30,42 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/business_home">
-                <div class="sidebar-brand-icon rotate-n-15">
-                </div>
-                <div class="sidebar-brand-text mx-3">B.I.T.I
-                    <p>Bag It, tag, It</p>
-                </div>
-            </a>
+            <%if(role === "business"){%> 
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/business_home">
+                    <div class="sidebar-brand-icon rotate-n-15">
+                    </div>
+                    <div class="sidebar-brand-text mx-3">B.I.T.I
+                        <p>Bag It, tag, It</p>
+                    </div>
+                </a>
+            <%} else {%> 
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/customer_home">
+                    <div class="sidebar-brand-icon rotate-n-15">
+                    </div>
+                    <div class="sidebar-brand-text mx-3">B.I.T.I
+                        <p>Bag It, tag, It</p>
+                    </div>
+                </a>
+            <%}%>
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" href="/business_home">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
-            </li>
+
+            <%if(role==="business" ){%>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/business_home">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Dashboard</span></a>
+                </li>
+                <%} else {%>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/customer_home">
+                            <i class="fas fa-fw fa-tachometer-alt"></i>
+                            <span>Dashboard</span></a>
+                    </li>
+                <%}%>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -128,11 +147,19 @@
             </li>
 
             <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="/business_orders">
-                    <i class="fas fa-fw fa-cart-shopping"></i>
-                    <span>Orders</span></a>
-            </li>
+            <%if(role === "business"){%> 
+                <li class="nav-item">
+                    <a class="nav-link" href="/business_orders">
+                        <i class="fas fa-fw fa-cart-shopping"></i>
+                        <span>Orders</span></a>
+                </li>
+            <%} else {%> 
+                <li class="nav-item">
+                    <a class="nav-link" href="/customer_orders">
+                        <i class="fas fa-fw fa-cart-shopping"></i>
+                        <span>Orders</span></a>
+                </li>
+            <%}%>
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -373,9 +400,12 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Earnings (Monthly)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">₹<%=
-                                                    dashboard_stats.monthly_earnings %>
+                                                <%if(role === "business"){%> Earnings (Monthly)</div>
+                                                     <%} else {%> Expenditure (Monthly)</div> <%}%>
+                                                
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">₹
+                                                <%if(role === "business"){%> <%=dashboard_stats.monthly_earnings%>
+                                                    <%} else {%> <%=dashboard_stats.monthly_expenses%> <%}%>
                                             </div>
                                         </div>
                                         <div class="col-auto">
@@ -393,9 +423,11 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                Earnings (Annual)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">₹<%=
-                                                    dashboard_stats.yearly_earnings %>
+                                                <%if(role === "business"){%> Earnings (Annual)</div>
+                                                    <%} else {%> Expenditure (Annual)</div> <%}%>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">₹
+                                                <%if(role === "business"){%> <%=dashboard_stats.yearly_earnings%>
+                                                    <%} else {%> <%=dashboard_stats.yearly_expenses%> <%}%>
                                             </div>
                                         </div>
                                         <div class="col-auto">
@@ -469,7 +501,10 @@
                                 <!-- Card Header - Dropdown -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">
+                                        <%if(role === "business"){%> Earnings Overview</h6>
+                                                    <%} else {%>Expenditure Overview</h6> <%}%>
+                                        
                                     <div class="dropdown no-arrow">
                                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -533,6 +568,7 @@
                             </div>
                         </div>
                     </div>
+                    
                     <div class="row">
 
                         <!-- Area Chart -->

@@ -303,7 +303,73 @@ exports.chart_page = async function (req, res) {
     let session = req.session;
     if (session.email && session.type === "customer") {
         let user = await customer_db.findOne({ email: session.email }).exec();
-        res.render('chart', { user });
+        let orders = await order_db.find({ profileID: user._id }).exec();
+        let dashboard_stats = { monthly_expenses: 0, yearly_expenses: 0, pending_orders: 0, total_orders: 0 };
+        let bar_chart_stats = {
+            '0': 0,
+            '1': 0,
+            '2': 0,
+            '3': 0,
+            '4': 0,
+            '5': 0,
+            '6': 0,
+            '7': 0,
+            '8': 0,
+            '9': 0,
+            '10': 0,
+            '11': 0
+        };
+        let delivery_stats = {
+            "On/Before Time Delivery": 0,
+            "Delayed Delivery": 0
+        }
+        let paymentMethod_stats = {
+            "Credit Card": 0,
+            "Debit Card": 0,
+            "Cash": 0,
+            "UPI": 0,
+            "Bank Transfer": 0,
+            "Online Wallets": 0,
+            "Other": 0
+        }
+        let order_categories = {
+            "Books": 0,
+            "Car & Automobiles": 0,
+            "Clothing & Accessories": 0,
+            "Electronics": 0,
+            "Grocery & Gourmet": 0,
+            "Health & Personal Care": 0,
+            "Home & Kitchen": 0,
+            "Jewellery": 0,
+            "Musical Instruments": 0,
+            "Office Product": 0,
+            "Shoes & Handbag": 0,
+            "Sports & Fitness": 0,
+            "Toys & Games": 0,
+            "Watches": 0
+        }
+        const d = new Date();
+        monthly_expenses_func = orders.map((order) => {
+            orderDate = new Date(order.dateOfOrder.toISOString());
+            if (order.status != "Cancelled")
+                dashboard_stats.total_orders += 1;
+            if (orderDate.getMonth() === d.getMonth() && order.status === "Completed")
+                dashboard_stats.monthly_expenses += order.payableAmount;
+            if (orderDate.getFullYear() === d.getFullYear() && order.status === "Completed")
+                dashboard_stats.yearly_expenses += order.payableAmount;
+            if (order.status != "Completed" && order.status != "Cancelled")
+                dashboard_stats.pending_orders += 1;
+            if (order.status === "Completed") {
+                order_categories[order.orderType] += 1;
+                paymentMethod_stats[order.paymentMethod] += 1;
+                if (order.deliveredDate.valueOf() <= order.dueDate.valueOf())
+                    delivery_stats["On/Before Time Delivery"] += 1;
+                else delivery_stats["Delayed Delivery"] += 1;
+                bar_chart_stats[String(orderDate.getMonth())] += order.payableAmount;
+            }
+        });
+        res.render('charts', { user, order_categories, bar_chart_stats, delivery_stats, paymentMethod_stats, dashboard_stats, role: "customer" });
+
     } else if (session.email && session.type === "business") {
         let user = await shop_db.findOne({ email: session.email }).exec();
         let business = user;
@@ -356,12 +422,13 @@ exports.chart_page = async function (req, res) {
         const d = new Date();
         monthly_earnings_func = orders.map((order) => {
             orderDate = new Date(order.dateOfOrder.toISOString());
-            dashboard_stats.total_orders += 1;
+            if (order.status != "Cancelled")
+                dashboard_stats.total_orders += 1;
             if (orderDate.getMonth() === d.getMonth() && order.status === "Completed")
                 dashboard_stats.monthly_earnings += order.payableAmount;
             if (orderDate.getFullYear() === d.getFullYear() && order.status === "Completed")
                 dashboard_stats.yearly_earnings += order.payableAmount;
-            if (order.status != "Completed")
+            if (order.status != "Completed" && order.status != "Cancelled")
                 dashboard_stats.pending_orders += 1;
             if (order.status === "Completed") {
                 order_categories[order.orderType] += 1;
@@ -372,8 +439,7 @@ exports.chart_page = async function (req, res) {
                 bar_chart_stats[String(orderDate.getMonth())] += order.payableAmount;
             }
         });
-        console.log(order_categories);
-        res.render('charts', { user, order_categories, bar_chart_stats, delivery_stats, paymentMethod_stats, dashboard_stats });
+        res.render('charts', { user, order_categories, bar_chart_stats, delivery_stats, paymentMethod_stats, dashboard_stats, role: "business" });
     }
     else
         res.redirect('/logout')
