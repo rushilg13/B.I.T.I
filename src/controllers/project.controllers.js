@@ -337,6 +337,22 @@ exports.chart_page = async function (req, res) {
             "Online Wallets": 0,
             "Other": 0
         }
+        let order_categories = {
+            "Books": 0,
+            "Car & Automobiles": 0,
+            "Clothing & Accessories": 0,
+            "Electronics": 0,
+            "Grocery & Gourmet": 0,
+            "Health & Personal Care": 0,
+            "Home & Kitchen": 0,
+            "Jewellery": 0,
+            "Musical Instruments": 0,
+            "Office Product": 0,
+            "Shoes & Handbag": 0,
+            "Sports & Fitness": 0,
+            "Toys & Games": 0,
+            "Watches": 0
+        }
         const d = new Date();
         monthly_earnings_func = orders.map((order) => {
             orderDate = new Date(order.dateOfOrder.toISOString());
@@ -348,6 +364,7 @@ exports.chart_page = async function (req, res) {
             if (order.status != "Completed")
                 dashboard_stats.pending_orders += 1;
             if (order.status === "Completed") {
+                order_categories[order.orderType] += 1;
                 paymentMethod_stats[order.paymentMethod] += 1;
                 if (order.deliveredDate.valueOf() <= order.dueDate.valueOf())
                     delivery_stats["On/Before Time Delivery"] += 1;
@@ -355,8 +372,8 @@ exports.chart_page = async function (req, res) {
                 bar_chart_stats[String(orderDate.getMonth())] += order.payableAmount;
             }
         });
-
-        res.render('charts', { user, bar_chart_stats, delivery_stats, paymentMethod_stats, dashboard_stats });
+        console.log(order_categories);
+        res.render('charts', { user, order_categories, bar_chart_stats, delivery_stats, paymentMethod_stats, dashboard_stats });
     }
     else
         res.redirect('/logout')

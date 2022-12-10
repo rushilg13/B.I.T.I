@@ -591,7 +591,7 @@
                                 <!-- Card Body -->
                                 <div class="card-body">
                                     <div class="chart-pie pt-4 pb-2">
-                                        <canvas id="myPieChart"></canvas>
+                                        <canvas id="orderCategories_pie"></canvas>
                                     </div>
                                     <div class="mt-4 text-center small">
                                         <span class="mr-2">
@@ -669,6 +669,7 @@
 <!-- Custom scripts for all pages-->
 <script src="js/admin.min.js"></script>
 <script>
+
     function getRandomInt(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
@@ -696,6 +697,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.1/dist/chart.umd.min.js"></script>
 <!-- Page level custom scripts -->
 <script>
+
     function toMonthName(monthNumber) {
         const date = new Date();
         date.setMonth(monthNumber - 1);
@@ -822,7 +824,50 @@
             }
         }
     });
-console.log(<%= dashboard_stats.total_orders %>);
+
+    var cats = ["Books",
+        "Car & Automobiles",
+        "Clothing & Accessories",
+        "Electronics",
+        "Grocery & Gourmet",
+        "Health & Personal Care",
+        "Home & Kitchen",
+        "Jewellery",
+        "Musical Instruments",
+        "Office Product",
+        "Shoes & Handbag",
+        "Sports & Fitness",
+        "Toys & Games",
+        "Watches"];
+    var vals = [<%=Object.values(order_categories) %>];
+    var n = cats.length;
+    let cat_vals = {}
+    for (let i = 0; i < n; i++) {
+        if (vals[i] != 0) {
+            cat_vals[cats[i]] = vals[i];
+        }
+    }
+    console.log(cat_vals);
+    const orderCategories_pie_chart = document.getElementById('orderCategories_pie');
+    new Chart(orderCategories_pie_chart, {
+        type: 'pie',
+        data: {
+            labels: Object.keys(cat_vals),
+            datasets: [{
+                label: 'Order Categories Stats',
+                data: Object.values(cat_vals),
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.8)',
+                    'rgba(255, 159, 64, 0.8)',
+                    'rgba(255, 255, 86, 0.8)',
+                    'rgba(75, 192, 192, 0.8)',
+                    'rgba(54, 162, 235, 0.8)',
+                    'rgba(153, 102, 255, 0.8)',
+                    'rgba(201, 203, 207, 0.8)',
+                ]
+            }]
+        }
+    });
 </script>
 
 </html>
