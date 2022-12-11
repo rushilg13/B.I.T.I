@@ -3,6 +3,8 @@ const path = require("path");
 const customer_db = require('../models/project.customer');
 const order_db = require('../models/project.order');
 const shop_db = require('../models/project.shop');
+const { parse } = require('json2csv');
+const fs = require('fs');
 
 exports.homepage = function (req, res) {
     res.render('index');
@@ -325,6 +327,32 @@ exports.submit_review = async function (req, res) {
     await shop_db.findByIdAndUpdate(req.body.id, { reviews: curr_reviews, numOfRating: curr_numOfRating, rating: curr_rating }).exec();
     let link = "/view-business/" + req.body.id;
     res.redirect(link);
+}
+
+exports.generate_csv = async function (req, res) {
+    let session = req.session;
+    if (session.email && session.type == "business") {
+        let orders = await order_db.find({ shopID: req.body.id }).exec();
+        const fields = ["orderDesc", "orderID", "dateOfOrder", 'dueDate', 'deliveredDate', 'orderType', 'paymentMethod', 'customerPhone', 'payableAmount', 'status', 'updates', 'updatedOn', 'additionalNotes'];
+        const opts = { fields };
+        try {
+            const csv = parse(orders, opts);
+            let d = new Date(Date.now()).toLocaleString();
+            d = d.substring(0, 10);
+            d = d.replaceAll("/", "-");
+            console.log(d);
+            const filename = "my-orders-" + d + ".csv";
+            console.log(filename, orders, csv);
+            fs.writeFile(filename ,csv, function (err) {
+                if(err) throw err;
+                console.log('written');
+            });
+        }
+        catch{}
+        res.redirect('/business_home')
+    }
+    else
+        res.redirect('/logout');
 }
 
 exports.chart_page = async function (req, res) {

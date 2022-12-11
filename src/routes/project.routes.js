@@ -21,6 +21,7 @@ router.post('/updateOrder', project_controller.order_update); // from update ord
 router.get('/view-business/:id', project_controller.view_business);
 router.get('/add-review/:id', project_controller.add_review);
 router.post('/submit-review', project_controller.submit_review);
+router.post('/generate-csv', project_controller.generate_csv);
 
 router.get('/charts', project_controller.chart_page);
 
