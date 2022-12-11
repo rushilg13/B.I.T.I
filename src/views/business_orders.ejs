@@ -477,7 +477,7 @@
                                                                                                     value="<%= orders[i]._id %>"
                                                                                                     name="id">
                                                                                                 <button
-                                                                                                    class="btn btn-danger"><i
+                                                                                                    class="btn btn-danger" onclick="return confirmDelete()"><i
                                                                                                         class="fa-solid fa-trash"></i>
                                                                                                     <span></span>
                                                                                                 </button>
@@ -678,6 +678,12 @@
 <!-- Custom scripts for all pages-->
 <script src="js/admin.min.js"></script>
 <script>
+
+    function confirmDelete(){
+        var ans = confirm("Are you sure you want to delete this order?");
+        if (!ans) return false;
+    }
+
     function getRandomInt(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
