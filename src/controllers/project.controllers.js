@@ -340,16 +340,30 @@ exports.generate_csv = async function (req, res) {
             let d = new Date(Date.now()).toLocaleString();
             d = d.substring(0, 10);
             d = d.replaceAll("/", "-");
-            console.log(d);
             const filename = "my-orders-" + d + ".csv";
-            console.log(filename, orders, csv);
-            fs.writeFile(filename ,csv, function (err) {
-                if(err) throw err;
-                console.log('written');
+            fs.writeFile(filename, csv, function (err) {
+                if (err) throw err;
             });
         }
-        catch{}
+        catch { }
         res.redirect('/business_home')
+    }
+    else if (session.email && session.type == "customer") {
+        let orders = await order_db.find({ profileID: req.body.id }).exec();
+        const fields = ["orderDesc", "orderID", "dateOfOrder", 'dueDate', 'deliveredDate', 'orderType', 'paymentMethod', 'customerPhone', 'payableAmount', 'status', 'updates', 'updatedOn', 'additionalNotes'];
+        const opts = { fields };
+        try {
+            const csv = parse(orders, opts);
+            let d = new Date(Date.now()).toLocaleString();
+            d = d.substring(0, 10);
+            d = d.replaceAll("/", "-");
+            const filename = "my-orders-" + d + ".csv";
+            fs.writeFile(filename, csv, function (err) {
+                if (err) throw err;
+            });
+        }
+        catch { }
+        res.redirect('/customer_home')
     }
     else
         res.redirect('/logout');
