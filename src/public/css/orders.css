@@ -69,8 +69,45 @@ td {
 .table tr {
   cursor: pointer;
 }
+
 .hiddenRow {
   padding: 0 4px !important;
   background-color: #eeeeee;
   font-size: 13px;
+}
+
+/* component */
+
+.star-rating {
+  display: flex;
+  flex-direction: row-reverse;
+  font-size: 1.5em;
+  justify-content: space-around;
+  padding: 0 .2em;
+  text-align: center;
+  width: 5em;
+  width: 50%;
+  margin: 0 auto;
+}
+
+.star-rating input {
+  display: none;
+}
+
+.star-rating label {
+  color: #ccc;
+  cursor: pointer;
+}
+
+.star-rating :checked~label {
+  color: #f90;
+}
+
+.star-rating label:hover,
+.star-rating label:hover~label {
+  color: #fc0;
+}
+
+.mid{
+  margin: auto;
 }

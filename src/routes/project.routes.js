@@ -22,6 +22,7 @@ router.get('/view-business/:id', project_controller.view_business);
 router.get('/add-review/:id', project_controller.add_review);
 router.post('/submit-review', project_controller.submit_review);
 router.post('/generate-csv', project_controller.generate_csv);
+router.post('/rate-customer', project_controller.rate_customer);
 
 router.get('/charts', project_controller.chart_page);
 

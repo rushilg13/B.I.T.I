@@ -334,7 +334,7 @@ exports.generate_csv = async function (req, res) {
     if (session.email && session.type == "business") {
         let orders = await order_db.find({ shopID: req.body.id }).exec();
         let final_orders = [];
-        for(let i=0; i<orders.length; i++){
+        for (let i = 0; i < orders.length; i++) {
             let order = orders[i];
             if (order.profileID != null) {
                 let customer = await customer_db.find({ _id: order.profileID }).exec();
@@ -351,7 +351,7 @@ exports.generate_csv = async function (req, res) {
                 let updated_order = { ...order._doc, customerName, customerEmail, customerAddress };
                 final_orders.push(updated_order);
             }
-        };        
+        };
         const fields = ["orderDesc", "orderID", "dateOfOrder", 'dueDate', 'deliveredDate', 'orderType', 'paymentMethod', 'customerPhone', 'payableAmount', 'status', 'updates', 'updatedOn', 'additionalNotes', 'customerName', 'customerEmail', 'customerAddress'];
         const opts = { fields };
         try {
@@ -370,7 +370,7 @@ exports.generate_csv = async function (req, res) {
     else if (session.email && session.type == "customer") {
         let orders = await order_db.find({ profileID: req.body.id }).exec();
         let final_orders = [];
-        for(let i=0; i<orders.length; i++){
+        for (let i = 0; i < orders.length; i++) {
             let order = orders[i];
             if (order.shopID != null) {
                 let shop = await shop_db.find({ _id: order.shopID }).exec();
@@ -404,6 +404,34 @@ exports.generate_csv = async function (req, res) {
         }
         catch { }
         res.redirect('/customer_home')
+    }
+    else
+        res.redirect('/logout');
+}
+
+exports.rate_customer = async function (req, res) {
+    let session = req.session;
+    if (session.email && session.type === "business") {
+        let user = await shop_db.findOne({ email: session.email }).exec();
+        await order_db.findByIdAndUpdate(req.body.order_id, { "status": "Completed" }).exec();
+        let order = await order_db.findOne({ _id: req.body.order_id }).exec();
+
+        if (req.body.customer_id === "") {
+            res.render('order_update', { user, order })
+        }
+        else {
+            let customer = await customer_db.findOne({ _id: req.body.customer_id }).exec();
+            let curr_rating = (customer.rating * customer.numOfRating) + parseInt(req.body.rating);
+            let curr_numOfRating = customer.numOfRating + 1;
+            curr_rating = Math.round(curr_rating / curr_numOfRating);
+            let updatedCustomer = {
+                "rating": curr_rating,
+                "numOfRating": curr_numOfRating
+            }
+            console.log(updatedCustomer);
+            await customer_db.findByIdAndUpdate(req.body.customer_id, updatedCustomer).exec();
+            res.render('order_update', { user, order })
+        }
     }
     else
         res.redirect('/logout');

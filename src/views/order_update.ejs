@@ -412,8 +412,8 @@
                             value="<%= order.payableAmount %>">
                     </div>
                     <div class="col-md-2">
-                        <label for="inputZip" class="form-label">Status</label>
-                        <select size="1" class="form-control" name="status" id="inputZip">
+                        <label for="order_status" class="form-label">Status</label>
+                        <select size="1" class="form-control" name="status" id="order_status">
                             <option value="<%= order.status %>" selected>
                                 <%= order.status %>
                             </option>
@@ -505,6 +505,44 @@
         </div>
     </div>
 
+    <div id="customer_rating" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Customer Rating</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <!-- make input to take rating, add hidden field for customer id, add post route and add rating to customer_db -->
+                <div class="modal-body">
+                    <form action="/rate-customer" method="post">
+                        <input type="hidden" value="<%=order._id%>" name="order_id">
+                        <input type="hidden" value="<%=order.profileID%>" name="customer_id">
+                        <p>Leave the customer a rating</p>
+                        <div class="star-rating">
+                            <input type="radio" id="5-stars" name="rating" value="5" />
+                            <label for="5-stars" class="star">&#9733;</label>
+                            <input type="radio" id="4-stars" name="rating" value="4" />
+                            <label for="4-stars" class="star">&#9733;</label>
+                            <input type="radio" id="3-stars" name="rating" value="3" />
+                            <label for="3-stars" class="star">&#9733;</label>
+                            <input type="radio" id="2-stars" name="rating" value="2" />
+                            <label for="2-stars" class="star">&#9733;</label>
+                            <input type="radio" id="1-star" name="rating" value="1" />
+                            <label for="1-star" class="star">&#9733;</label>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" value="Submit" class="mid btn btn-success">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
     <div id="profileModal" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -588,6 +626,13 @@
             $(this).toggleClass('active').siblings().removeClass('active');
         });
 
+    });
+    
+    $("#order_status").on("change", function () {
+        $modal = $('#customer_rating');
+        if ($(this).val() === 'Completed') {
+            $modal.modal('show');
+        }
     });
 </script>
 
