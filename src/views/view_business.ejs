@@ -100,11 +100,13 @@
 
                                 </div>
                                 <h3 class="c-black">Business Reviews</h3>
+                                <% if(shop.reviews.length != 0) {%>
                                 <h5 class="c-black mb-4 mt-n1">
                                     <% let rev = shop.reviews[shop.reviews.length - 1] %>
                                     <i>"<%=rev.body%>"</i>
                                     <p style="text-align: right;padding-right: 10px;">~<%=rev.name%></p>
                                 </h5>
+                                <% } %>
                                 <form action="/add-review/<%=shop._id%>" method="get">
                                     <button class="btn btn-sm btn-primary">
                                         <i class="zmdi zmdi-comment">
