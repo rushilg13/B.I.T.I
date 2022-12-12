@@ -333,10 +333,29 @@ exports.generate_csv = async function (req, res) {
     let session = req.session;
     if (session.email && session.type == "business") {
         let orders = await order_db.find({ shopID: req.body.id }).exec();
-        const fields = ["orderDesc", "orderID", "dateOfOrder", 'dueDate', 'deliveredDate', 'orderType', 'paymentMethod', 'customerPhone', 'payableAmount', 'status', 'updates', 'updatedOn', 'additionalNotes'];
+        let final_orders = [];
+        for(let i=0; i<orders.length; i++){
+            let order = orders[i];
+            if (order.profileID != null) {
+                let customer = await customer_db.find({ _id: order.profileID }).exec();
+                let customerName = customer[0].name;
+                let customerEmail = customer[0].email;
+                let customerAddress = customer[0].address;
+                let updated_order = { ...order._doc, customerName, customerEmail, customerAddress };
+                final_orders.push(updated_order);
+            }
+            else {
+                let customerName = "";
+                let customerEmail = "";
+                let customerAddress = "";
+                let updated_order = { ...order._doc, customerName, customerEmail, customerAddress };
+                final_orders.push(updated_order);
+            }
+        };        
+        const fields = ["orderDesc", "orderID", "dateOfOrder", 'dueDate', 'deliveredDate', 'orderType', 'paymentMethod', 'customerPhone', 'payableAmount', 'status', 'updates', 'updatedOn', 'additionalNotes', 'customerName', 'customerEmail', 'customerAddress'];
         const opts = { fields };
         try {
-            const csv = parse(orders, opts);
+            const csv = parse(final_orders, opts);
             let d = new Date(Date.now()).toLocaleString();
             d = d.substring(0, 10);
             d = d.replaceAll("/", "-");
@@ -350,10 +369,31 @@ exports.generate_csv = async function (req, res) {
     }
     else if (session.email && session.type == "customer") {
         let orders = await order_db.find({ profileID: req.body.id }).exec();
-        const fields = ["orderDesc", "orderID", "dateOfOrder", 'dueDate', 'deliveredDate', 'orderType', 'paymentMethod', 'customerPhone', 'payableAmount', 'status', 'updates', 'updatedOn', 'additionalNotes'];
+        let final_orders = [];
+        for(let i=0; i<orders.length; i++){
+            let order = orders[i];
+            if (order.shopID != null) {
+                let shop = await shop_db.find({ _id: order.shopID }).exec();
+                let shopName = shop[0].name;
+                let shopEmail = shop[0].email;
+                let shopAddress = shop[0].address;
+                let shopPhone = shop[0].phone;
+                let updated_order = { ...order._doc, shopName, shopEmail, shopAddress, shopPhone };
+                final_orders.push(updated_order);
+            }
+            else {
+                let shopName = "";
+                let shopEmail = "";
+                let shopPhone = "";
+                let shopAddress = "";
+                let updated_order = { ...order._doc, shopName, shopEmail, shopAddress, shopPhone };
+                final_orders.push(updated_order);
+            }
+        };
+        const fields = ["orderDesc", "orderID", "dateOfOrder", 'dueDate', 'deliveredDate', 'orderType', 'paymentMethod', 'customerPhone', 'payableAmount', 'status', 'updates', 'updatedOn', 'additionalNotes', "shopName", "shopEmail", "shopAddress", "shopPhone"];
         const opts = { fields };
         try {
-            const csv = parse(orders, opts);
+            const csv = parse(final_orders, opts);
             let d = new Date(Date.now()).toLocaleString();
             d = d.substring(0, 10);
             d = d.replaceAll("/", "-");
