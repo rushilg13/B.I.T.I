@@ -8,21 +8,22 @@ const fs = require('fs');
 const bcrypt = require('bcryptjs');
 const nodemailer = require("nodemailer");
 
-const transporter = nodemailer.createTransport({
-    port: 465,               // true for 465, false for other ports
-    host: "smtp.gmail.com",
-    auth: {
-        user: "bagittagit16@gmail.com",
-        pass: 'okycofladlgbvaor',
-    },
-    secure: true,
-});
-
 exports.homepage = function (req, res) {
     res.render('index');
 }
 
 exports.sendMail = function (req, res) {
+
+    const transporter = nodemailer.createTransport({
+        port: 465,               // true for 465, false for other ports
+        host: "smtp.gmail.com",
+        auth: {
+            user: "bagittagit16@gmail.com",
+            pass: 'okycofladlgbvaor',
+        },
+        secure: true,
+    });
+
     const mailData = {
         from: 'bagittagit16@gmail.com"',  // sender address
         to: req.body.email,   // list of receivers
@@ -34,6 +35,7 @@ exports.sendMail = function (req, res) {
         cursor: pointer; border-radius: 10px; border: 1px solid #D9D9D9; 
         font-size: 110%;">START NOW</a>`,
     };
+    
     transporter.sendMail(mailData, function (err, info) {
         if (err)
             console.log(err)
