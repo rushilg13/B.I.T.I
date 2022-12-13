@@ -64,8 +64,6 @@ $(".feedback-tags  ").on("click", function () {
         $(".button-box .done").removeAttr("disabled");
     }
 
-    console.log(choosedTagsLength);
-
     if (choosedTagsLength <= 0) {
         $(".button-box .done").attr("enabled", "false");
     }
