@@ -34,21 +34,28 @@ exports.business_home = function (req, res) {
                 let orders = await order_db.find({ shopID: business_id }).exec();
                 let upcoming_orders = [];
                 const d = new Date();
+                let incoming = 0
+                let overdue = 0;
                 orders_loop = orders.map((order) => {
                     orderDate = new Date(order.dueDate.toISOString());
                     if (order.dueDate.toISOString() <= d.toISOString() && order.status != "Completed") {
                         let urgent = true;
                         order = { ...order._doc, urgent };
                         upcoming_orders.push(order);
+                        overdue += 1;
                     }
                     else if (orderDate.getMonth() === d.getMonth() && order.status != "Completed") {
                         let urgent = false;
                         order = { ...order._doc, urgent };
                         upcoming_orders.push(order);
+                        incoming += 1;
                     }
                 });
                 upcoming_orders = upcoming_orders.sort((a, b) => Number(b.urgent) - Number(a.urgent));
-                res.render("business_home", { user, upcoming_orders });
+                let alerts = [];
+                if (incoming > 0) { alerts.push(`You have ${incoming} upcoming orders!`) }
+                if (overdue > 0) { alerts.push(`You have ${overdue} orders overdue!`) }
+                res.render("business_home", { user, upcoming_orders, alerts });
             } else {
                 //code if no user with session email was found
                 res.redirect('/logout');
@@ -166,7 +173,22 @@ exports.business_orders = async function (req, res) {
             if (user) {
                 let business_id = await shop_db.findOne({ email: session.email }).exec();
                 let orders = await order_db.find({ shopID: business_id }).sort({ dateOfOrder: -1 }).exec();
-                res.render("business_orders", { user, orders, flash: '' });
+                const d = new Date();
+                let incoming = 0
+                let overdue = 0;
+                let alerts = []
+                orders_loop = orders.map((order) => {
+                    orderDate = new Date(order.dueDate.toISOString());
+                    if (order.dueDate.toISOString() <= d.toISOString() && order.status != "Completed") {
+                        overdue += 1;
+                    }
+                    else if (orderDate.getMonth() === d.getMonth() && order.status != "Completed") {
+                        incoming += 1;
+                    }
+                });
+                if (incoming > 0) { alerts.push(`You have ${incoming} upcoming orders!`) }
+                if (overdue > 0) { alerts.push(`You have ${overdue} orders overdue!`) }
+                res.render("business_orders", { user, orders, flash: '', alerts });
             } else {
                 //code if no user with session email was found
                 res.redirect('/logout');
@@ -236,7 +258,7 @@ exports.order_update_page = async function (req, res) {
     if (session.email && session.type === "business") {
         let user = await shop_db.findOne({ email: session.email }).exec();
         let order = await order_db.findOne({ _id: req.body.id }).exec();
-        res.render('order_update', { user, order })
+        res.render('order_update', { user, order });
     }
     else {
         res.redirect('/logout');
@@ -279,7 +301,25 @@ exports.order_update_page = async function (req, res) {
     if (session.email && session.type === "business") {
         let user = await shop_db.findOne({ email: session.email }).exec();
         let order = await order_db.findById(req.body.id).exec();
-        res.render('order_update', { user, order });
+        let business = await shop_db.findOne({ email: session.email }).exec();
+        let business_id = business._id;
+        let orders = await order_db.find({ shopID: business_id }).exec();
+        const d = new Date();
+        let incoming = 0
+        let overdue = 0;
+        let alerts = []
+        orders_loop = orders.map((order) => {
+            orderDate = new Date(order.dueDate.toISOString());
+            if (order.dueDate.toISOString() <= d.toISOString() && order.status != "Completed") {
+                overdue += 1;
+            }
+            else if (orderDate.getMonth() === d.getMonth() && order.status != "Completed") {
+                incoming += 1;
+            }
+        });
+        if (incoming > 0) { alerts.push(`You have ${incoming} upcoming orders!`); }
+        if (overdue > 0) { alerts.push(`You have ${overdue} orders overdue!`); }
+        res.render('order_update', { user, order, alerts });
     }
     else
         res.render("business_login", { flash: '' });
@@ -557,9 +597,19 @@ exports.chart_page = async function (req, res) {
             "Toys & Games": 0,
             "Watches": 0
         }
+        let incoming = 0;
+        let overdue = 0;
+        let alerts = [];
         const d = new Date();
         monthly_earnings_func = orders.map((order) => {
             orderDate = new Date(order.dateOfOrder.toISOString());
+            orderDueDate = new Date(order.dueDate.toISOString());
+            if (order.dueDate.toISOString() <= d.toISOString() && order.status != "Completed") {
+                overdue += 1;
+            }
+            else if (orderDueDate.getMonth() === d.getMonth() && order.status != "Completed") {
+                incoming += 1;
+            }
             if (order.status != "Cancelled")
                 dashboard_stats.total_orders += 1;
             if (orderDate.getMonth() === d.getMonth() && order.status === "Completed")
@@ -577,7 +627,9 @@ exports.chart_page = async function (req, res) {
                 bar_chart_stats[String(orderDate.getMonth())] += order.payableAmount;
             }
         });
-        res.render('charts', { user, order_categories, bar_chart_stats, delivery_stats, paymentMethod_stats, dashboard_stats, role: "business" });
+        if (incoming > 0) { alerts.push(`You have ${incoming} upcoming orders!`) }
+        if (overdue > 0) { alerts.push(`You have ${overdue} orders overdue!`) }
+        res.render('charts', { user, order_categories, bar_chart_stats, delivery_stats, paymentMethod_stats, dashboard_stats, role: "business", alerts });
     }
     else
         res.redirect('/logout')
