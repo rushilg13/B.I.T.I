@@ -19,7 +19,7 @@ exports.sendMail = function (req, res) {
         host: "smtp.gmail.com",
         auth: {
             user: "bagittagit16@gmail.com",
-            pass: 'okycofladlgbvaor',
+            pass: process.env.GOOGLE_APP_PASSWORD,
         },
         secure: true,
     });
@@ -35,12 +35,37 @@ exports.sendMail = function (req, res) {
         cursor: pointer; border-radius: 10px; border: 1px solid #D9D9D9; 
         font-size: 110%;">START NOW</a>`,
     };
-    
+
     transporter.sendMail(mailData, function (err, info) {
         if (err)
-            console.log(err)
-        else
-            console.log(info);
+            console.error(err)
+        res.redirect('/');
+    });
+}
+
+exports.doubt = function (req, res) {
+
+    const transporter = nodemailer.createTransport({
+        port: 465,               // true for 465, false for other ports
+        host: "smtp.gmail.com",
+        auth: {
+            user: "bagittagit16@gmail.com",
+            pass: process.env.GOOGLE_APP_PASSWORD,
+        },
+        secure: true,
+    });
+
+    const mailData = {
+        from: req.body.email,   // list of receivers
+        to: 'bagittagit16@gmail.com"',  // sender address
+        subject: req.body.sub,
+        text: 'Message from User!',
+        html: `From ${req.body.name}!<br>${req.body.msg}`
+    };
+
+    transporter.sendMail(mailData, function (err, info) {
+        if (err)
+            console.error(err)
         res.redirect('/');
     });
 }
