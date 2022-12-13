@@ -6,6 +6,7 @@ const passport = require('passport');
 const project_controller = require('../controllers/project.controllers');
 
 router.get("/", project_controller.homepage);
+router.post("/sendMail", project_controller.sendMail);
 
 router.get("/business_signup", project_controller.business_signuppage);
 router.post("/business_home_signup", project_controller.business_home_signup);
