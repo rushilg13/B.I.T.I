@@ -10,15 +10,15 @@ require('../passport');
 MONGO_PASSWORD = process.env.MONGO_PASSWORD;
 DATABASE_NAME = process.env.DATABASE_NAME;
 
-mongoose.connect(`mongodb+srv://VIT_Admin:${MONGO_PASSWORD}@vitdiaries.tpuku.mongodb.net/${DATABASE_NAME}?retryWrites=true&w=majority`, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
-
-// mongoose.connect('mongodb://localhost:27017/biti', {
+// mongoose.connect(`mongodb+srv://VIT_Admin:${MONGO_PASSWORD}@vitdiaries.tpuku.mongodb.net/${DATABASE_NAME}?retryWrites=true&w=majority`, {
 //     useNewUrlParser: true,
 //     useUnifiedTopology: true
 // });
+
+mongoose.connect('mongodb://localhost:27017/biti', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
 
 
 const db = mongoose.connection;

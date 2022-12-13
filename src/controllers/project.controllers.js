@@ -5,6 +5,7 @@ const order_db = require('../models/project.order');
 const shop_db = require('../models/project.shop');
 const { parse } = require('json2csv');
 const fs = require('fs');
+const bcrypt = require('bcryptjs');
 
 exports.homepage = function (req, res) {
     res.render('index');
@@ -88,13 +89,14 @@ exports.update_business_profile = function (req, res) {
         res.redirect('/logout');
 }
 
-exports.business_home_signup = function (req, res) {
+exports.business_home_signup = async function (req, res) {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10)
     let business = new shop_db({
         name: req.body.name,
         email: req.body.email,
         phone: req.body.phone,
         address: req.body.address,
-        password: req.body.password,
+        password: hashedPassword,
         categories: req.body.categories
     });
 
@@ -126,12 +128,13 @@ exports.business_home_signup = function (req, res) {
 }
 
 exports.business_home_login = function (req, res) {
-    shop_db.findOne({ email: req.body.email }, function (err, user) {
+    shop_db.findOne({ email: req.body.email }, async function (err, user) {
         if (err) {
             console.error(err);
         }
         if (user) {
-            if (user.password === req.body.password) {
+            const result = await bcrypt.compare(req.body.password, user.password);
+            if (result) {
                 let session = req.session;
                 session.email = req.body.email;
                 session.type = "business";
@@ -657,13 +660,14 @@ exports.customer_signuppage = function (req, res) {
         res.render("customer_signup", { flash: '' });
 }
 
-exports.customer_home_signup = function (req, res) {
+exports.customer_home_signup = async function (req, res) {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10)
     let customer = new customer_db({
         name: req.body.name,
         email: req.body.email,
         phone: req.body.phone,
         address: req.body.address,
-        password: req.body.password,
+        password: hashedPassword,
     });
 
     customer_db.findOne({ email: req.body.email }, function (err, user) {
@@ -700,12 +704,13 @@ exports.customer_loginpage = function (req, res) {
 }
 
 exports.customer_home_login = function (req, res) {
-    customer_db.findOne({ email: req.body.email }, function (err, user) {
+    customer_db.findOne({ email: req.body.email }, async function (err, user) {
         if (err) {
             console.error(err);
         }
         if (user) {
-            if (user.password === req.body.password) {
+            const result = await bcrypt.compare(req.body.password, user.password);
+            if (result) {
                 let session = req.session;
                 session.email = req.body.email;
                 session.type = "customer";
