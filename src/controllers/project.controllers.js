@@ -32,6 +32,7 @@ exports.business_home = function (req, res) {
                 let business = await shop_db.findOne({ email: session.email }).exec();
                 let business_id = business._id;
                 let orders = await order_db.find({ shopID: business_id }).exec();
+                let total_orders = orders.length;
                 let upcoming_orders = [];
                 const d = new Date();
                 let incoming = 0
@@ -55,7 +56,7 @@ exports.business_home = function (req, res) {
                 let alerts = [];
                 if (incoming > 0) { alerts.push(`You have ${incoming} upcoming orders!`) }
                 if (overdue > 0) { alerts.push(`You have ${overdue} orders overdue!`) }
-                res.render("business_home", { user, upcoming_orders, alerts });
+                res.render("business_home", { user, upcoming_orders, alerts, total_orders });
             } else {
                 //code if no user with session email was found
                 res.redirect('/logout');
@@ -173,6 +174,7 @@ exports.business_orders = async function (req, res) {
             if (user) {
                 let business_id = await shop_db.findOne({ email: session.email }).exec();
                 let orders = await order_db.find({ shopID: business_id }).sort({ dateOfOrder: -1 }).exec();
+                let total_orders = orders.length;
                 const d = new Date();
                 let incoming = 0
                 let overdue = 0;
@@ -188,7 +190,7 @@ exports.business_orders = async function (req, res) {
                 });
                 if (incoming > 0) { alerts.push(`You have ${incoming} upcoming orders!`) }
                 if (overdue > 0) { alerts.push(`You have ${overdue} orders overdue!`) }
-                res.render("business_orders", { user, orders, flash: '', alerts });
+                res.render("business_orders", { user, orders, flash: '', alerts, total_orders });
             } else {
                 //code if no user with session email was found
                 res.redirect('/logout');
@@ -304,6 +306,7 @@ exports.order_update_page = async function (req, res) {
         let business = await shop_db.findOne({ email: session.email }).exec();
         let business_id = business._id;
         let orders = await order_db.find({ shopID: business_id }).exec();
+        let total_orders = orders.length;
         const d = new Date();
         let incoming = 0
         let overdue = 0;
@@ -319,7 +322,7 @@ exports.order_update_page = async function (req, res) {
         });
         if (incoming > 0) { alerts.push(`You have ${incoming} upcoming orders!`); }
         if (overdue > 0) { alerts.push(`You have ${overdue} orders overdue!`); }
-        res.render('order_update', { user, order, alerts });
+        res.render('order_update', { user, order, alerts, total_orders });
     }
     else
         res.render("business_login", { flash: '' });
@@ -468,7 +471,6 @@ exports.rate_customer = async function (req, res) {
                 "rating": curr_rating,
                 "numOfRating": curr_numOfRating
             }
-            console.log(updatedCustomer);
             await customer_db.findByIdAndUpdate(req.body.customer_id, updatedCustomer).exec();
             res.render('order_update', { user, order })
         }
