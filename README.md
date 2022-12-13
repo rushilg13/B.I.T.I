@@ -3,6 +3,7 @@
 Website Link
 ------
 [Link to Deployed Webiste](https://b-i-t-i.onrender.com)
+![Screenshot](screenshot.png)
 
 ERD Diagram
 ------
@@ -16,3 +17,8 @@ Relational Schema
 Template link
 ------
 [Link to dashboard template](https://github.com/startbootstrap/startbootstrap-sb-admin-2)
+
+Left to Do
+------
+ Markup : - [ ] Implement a Search bar
+          - [ ] Add Forgot Password
