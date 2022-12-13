@@ -20,5 +20,5 @@ Template link
 
 Left to Do
 ------
- Markup : - [ ] Implement a Search bar
-          - [ ] Add Forgot Password
+- [ ] Implement a Search bar
+- [ ] Add Forgot Password
