@@ -290,58 +290,166 @@
                                         <%}%>
                                 </div>
                             </li>
-                                                    <!-- Nav Item - Messages -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-envelope fa-fw"></i>
-                                <!-- Counter - Messages -->
-                                <span class="badge badge-danger badge-counter">1</span>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="messagesDropdown">
-                                <h6 class="dropdown-header">
-                                    Message Center
-                                </h6>
-                                <% if(dashboard_stats.total_orders == 1) {%>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="dropdown-list-image mr-3">
-                                            <img class="rounded-circle" style="object-fit: cover;" src="https://static.pexels.com/photos/324658/pexels-photo-324658.jpeg" alt="Official">
-                                            <div class="status-indicator bg-success"></div>
-                                        </div>
-                                        <div class="font-weight-bold">
-                                            <div class="text-truncate">Congratulations on your first Order!</div>
-                                            <div class="small text-gray-500">Emily Fowler · 58m</div>
-                                        </div>
-                                    </a>
-                                <% } else if(dashboard_stats.total_orders <= 3) {%>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" style="object-fit: cover;" src="https://static.pexels.com/photos/324658/pexels-photo-324658.jpeg" alt="Official">
-                                        <div class="status-indicator bg-success"></div>
-                                    </div>
-                                    <div class="font-weight-bold">
-                                        <div class="text-truncate">Hi there new user!</div>
-                                        <div class="small text-gray-500">Emily Fowler · 58m</div>
-                                    </div>
+                            <!-- Nav Item - Messages -->
+                            <li class="nav-item dropdown no-arrow mx-1">
+                                <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-envelope fa-fw"></i>
+                                    <!-- Counter - Messages -->
+                                    <span class="badge badge-danger badge-counter">1</span>
                                 </a>
-                                <%} else { %>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="dropdown-list-image mr-3">
-                                            <img class="rounded-circle" style="object-fit: cover;" src="https://static.pexels.com/photos/324658/pexels-photo-324658.jpeg" alt="Official">
-                                            <div class="status-indicator bg-success"></div>
-                                        </div>
-                                        <div class="font-weight-bold">
-                                            <div class="text-truncate">Congratulations on your orders!</div>
-                                            <div class="small text-gray-500">Emily Fowler · 58m</div>
-                                        </div>
-                                    </a>
-                                <% } %>
-                            </div>
-                        </li>
+                                <!-- Dropdown - Messages -->
+                                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                    aria-labelledby="messagesDropdown">
+                                    <h6 class="dropdown-header">
+                                        Message Center
+                                    </h6>
+                                    <% if(dashboard_stats.total_orders==1) {%>
+                                        <a class="dropdown-item d-flex align-items-center" href="#">
+                                            <div class="dropdown-list-image mr-3">
+                                                <img class="rounded-circle" style="object-fit: cover;"
+                                                    src="https://static.pexels.com/photos/324658/pexels-photo-324658.jpeg"
+                                                    alt="Official">
+                                                <div class="status-indicator bg-success"></div>
+                                            </div>
+                                            <div class="font-weight-bold">
+                                                <div class="text-truncate">Congratulations on your first Order!</div>
+                                                <div class="small text-gray-500">Emily Fowler · 58m</div>
+                                            </div>
+                                        </a>
+                                        <% } else if(dashboard_stats.total_orders <=3) {%>
+                                            <a class="dropdown-item d-flex align-items-center" href="#">
+                                                <div class="dropdown-list-image mr-3">
+                                                    <img class="rounded-circle" style="object-fit: cover;"
+                                                        src="https://static.pexels.com/photos/324658/pexels-photo-324658.jpeg"
+                                                        alt="Official">
+                                                    <div class="status-indicator bg-success"></div>
+                                                </div>
+                                                <div class="font-weight-bold">
+                                                    <div class="text-truncate">Hi there new user!</div>
+                                                    <div class="small text-gray-500">Emily Fowler · 58m</div>
+                                                </div>
+                                            </a>
+                                            <%} else { %>
+                                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                                    <div class="dropdown-list-image mr-3">
+                                                        <img class="rounded-circle" style="object-fit: cover;"
+                                                            src="https://static.pexels.com/photos/324658/pexels-photo-324658.jpeg"
+                                                            alt="Official">
+                                                        <div class="status-indicator bg-success"></div>
+                                                    </div>
+                                                    <div class="font-weight-bold">
+                                                        <div class="text-truncate">Congratulations on your orders!</div>
+                                                        <div class="small text-gray-500">Emily Fowler · 58m</div>
+                                                    </div>
+                                                </a>
+                                                <% } %>
+                                </div>
+                            </li>
                             <%} else {%>
+                                <!-- Nav Item - Alerts -->
+                                <li class="nav-item dropdown no-arrow mx-1">
+                                    <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-bell fa-fw"></i>
+                                        <!-- Counter - Alerts -->
+                                        <span class="badge badge-danger badge-counter">
+                                            <%=alerts.length + 1%>
+                                        </span>
+                                    </a>
+                                    <!-- Dropdown - Alerts -->
+                                    <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                        aria-labelledby="alertsDropdown">
+                                        <h6 class="dropdown-header">
+                                            Alerts Center
+                                        </h6>
+                                        <a class="dropdown-item d-flex align-items-center" href="/customer_home">
+                                            <div class="mr-3">
+                                                <div class="icon-circle bg-success">
+                                                    <i class="fas fa-download text-white"></i>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <span class="font-weight-bold">
+                                                    Your Order report is ready to be downloaded!
+                                                </span>
+                                            </div>
+                                        </a>
+                                        <% for(let i=0; i<alerts.length; i++) { %>
+                                            <a class="dropdown-item d-flex align-items-center" href="/customer_home">
+                                                <div class="mr-3">
+                                                    <div class="icon-circle bg-warning">
+                                                        <i class="fa-solid fa-triangle-exclamation text-white"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <span class="font-weight-bold">
+                                                        <%=alerts[i]%>
+                                                    </span>
+                                                </div>
+                                            </a>
+                                            <%}%>
+                                    </div>
+                                </li>
 
+                                <!-- Nav Item - Messages -->
+                                <li class="nav-item dropdown no-arrow mx-1">
+                                    <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-envelope fa-fw"></i>
+                                        <!-- Counter - Messages -->
+                                        <span class="badge badge-danger badge-counter">1</span>
+                                    </a>
+                                    <!-- Dropdown - Messages -->
+                                    <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                        aria-labelledby="messagesDropdown">
+                                        <h6 class="dropdown-header">
+                                            Message Center
+                                        </h6>
+                                        <% if(dashboard_stats.total_orders==1) {%>
+                                            <a class="dropdown-item d-flex align-items-center" href="#">
+                                                <div class="dropdown-list-image mr-3">
+                                                    <img class="rounded-circle" style="object-fit: cover;"
+                                                        src="https://static.pexels.com/photos/324658/pexels-photo-324658.jpeg"
+                                                        alt="Official">
+                                                    <div class="status-indicator bg-success"></div>
+                                                </div>
+                                                <div class="font-weight-bold">
+                                                    <div class="text-truncate">Congratulations on your first Order!
+                                                    </div>
+                                                    <div class="small text-gray-500">Emily Fowler · 58m</div>
+                                                </div>
+                                            </a>
+                                            <% } else if(dashboard_stats.total_orders <=3) {%>
+                                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                                    <div class="dropdown-list-image mr-3">
+                                                        <img class="rounded-circle" style="object-fit: cover;"
+                                                            src="https://static.pexels.com/photos/324658/pexels-photo-324658.jpeg"
+                                                            alt="Official">
+                                                        <div class="status-indicator bg-success"></div>
+                                                    </div>
+                                                    <div class="font-weight-bold">
+                                                        <div class="text-truncate">Hi there new user!</div>
+                                                        <div class="small text-gray-500">Emily Fowler · 58m</div>
+                                                    </div>
+                                                </a>
+                                                <%} else { %>
+                                                    <a class="dropdown-item d-flex align-items-center" href="#">
+                                                        <div class="dropdown-list-image mr-3">
+                                                            <img class="rounded-circle" style="object-fit: cover;"
+                                                                src="https://static.pexels.com/photos/324658/pexels-photo-324658.jpeg"
+                                                                alt="Official">
+                                                            <div class="status-indicator bg-success"></div>
+                                                        </div>
+                                                        <div class="font-weight-bold">
+                                                            <div class="text-truncate">Congratulations on your orders!
+                                                            </div>
+                                                            <div class="small text-gray-500">Emily Fowler · 58m</div>
+                                                        </div>
+                                                    </a>
+                                                    <% } %>
+                                    </div>
+                                </li>
                                 <%}%>
 
                                     <!-- Nav Item - User Information -->
