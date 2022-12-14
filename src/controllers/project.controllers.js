@@ -15,18 +15,18 @@ exports.homepage = function (req, res) {
 exports.sendMail = function (req, res) {
 
     const transporter = nodemailer.createTransport({
-        port: 465,               // true for 465, false for other ports
-        host: "smtp.gmail.com",
+        port: 465,
+        host: process.env.SMTP_ID,
         auth: {
-            user: "bagittagit16@gmail.com",
+            user: process.env.GMAIL_ID,
             pass: process.env.GOOGLE_APP_PASSWORD,
         },
         secure: true,
     });
 
     const mailData = {
-        from: 'bagittagit16@gmail.com"',  // sender address
-        to: req.body.email,   // list of receivers
+        from: process.env.GMAIL_ID,
+        to: req.body.email,
         subject: 'Sending Email using Node.js',
         text: 'That was easy!',
         html: `<b>Hey there! </b><br> Greetings from B.I.T.I <br/> We are delighted to see that you want to expore more about our product. feel free to click the button below and sign up for free! <br><br><br><br><br> <a href="https://b-i-t-i.onrender.com/business_signup" style="text-decoration:none;
@@ -46,18 +46,18 @@ exports.sendMail = function (req, res) {
 exports.doubt = function (req, res) {
 
     const transporter = nodemailer.createTransport({
-        port: 465,               // true for 465, false for other ports
-        host: "smtp.gmail.com",
+        port: 465,
+        host: process.env.SMTP_ID,
         auth: {
-            user: "bagittagit16@gmail.com",
+            user: process.env.GMAIL_ID,
             pass: process.env.GOOGLE_APP_PASSWORD,
         },
         secure: true,
     });
 
     const mailData = {
-        from: req.body.email,   // list of receivers
-        to: 'bagittagit16@gmail.com"',  // sender address
+        from: req.body.email,
+        to: process.env.GMAIL_ID,
         subject: req.body.sub,
         text: 'Message from User!',
         html: `From ${req.body.name}!<br>${req.body.msg}`
@@ -73,7 +73,7 @@ exports.doubt = function (req, res) {
 exports.business_signuppage = function (req, res) {
     let session = req.session;
     if (session.email && session.type === "business")
-        res.redirect("/business_home");        // res.send({ email: session.email }); // fix me. redirect to protected business home page
+        res.redirect("/business_home");
     else
         res.render("business_signup", { flash: '' });
 }
@@ -83,11 +83,8 @@ exports.business_home = function (req, res) {
     if (session.email && session.type === "business") {
         shop_db.findOne({ email: session.email }, async function (err, user) {
             if (err) {
-                //handle error here
                 console.error(err);
             }
-
-            //if a user was found, that means the user's email matches the session email
             if (user) {
                 let business = await shop_db.findOne({ email: session.email }).exec();
                 let business_id = business._id;
@@ -118,12 +115,10 @@ exports.business_home = function (req, res) {
                 if (overdue > 0) { alerts.push(`You have ${overdue} orders overdue!`) }
                 res.render("business_home", { user, upcoming_orders, alerts, total_orders });
             } else {
-                //code if no user with session email was found
                 res.redirect('/logout');
             };
         })
     }
-    // res.send({ email: session.email }); // fix me. redirect to protected business home page
     else
         res.redirect('/logout');
 }
@@ -162,18 +157,14 @@ exports.business_home_signup = async function (req, res) {
 
     shop_db.findOne({ email: req.body.email }, function (err, user) {
         if (err) {
-            //handle error here
             console.error(err);
         }
-
-        //if a user was found, that means the user's email matches the entered email
         if (user) {
             var err = new Error('A business with this email has already registered. Please login.')
             err.status = 400;
             res.render('business_login', { flash: 'An Account with this Email already exists! Please sign in.' });
             return err;
         } else {
-            //code if no user with entered email was found
             business.save(function (err) {
                 if (err) {
                     return (err);
@@ -207,7 +198,6 @@ exports.business_home_login = function (req, res) {
                 return err;
             }
         } else {
-            //code if no user with entered email was found
             var err = new Error('Invalid email ID. Please signup.')
             err.status = 400;
             res.render('business_signup', { flash: 'Incorrect Email ID Entered. Please Sign up.' });
@@ -219,7 +209,7 @@ exports.business_home_login = function (req, res) {
 exports.business_loginpage = function (req, res) {
     let session = req.session;
     if (session.email && session.type === "business")
-        res.redirect("/business_home");    // res.send({ email: session.email }); // Fix me
+        res.redirect("/business_home");
     else
         res.render("business_login", { flash: '' });
 }
@@ -229,11 +219,8 @@ exports.business_orders = async function (req, res) {
     if (session.email && session.type === "business") {
         shop_db.findOne({ email: session.email }, async function (err, user) {
             if (err) {
-                //handle error here
                 console.error(err);
             }
-
-            //if a user was found, that means the user's email matches the session email
             if (user) {
                 let business_id = await shop_db.findOne({ email: session.email }).exec();
                 let orders = await order_db.find({ shopID: business_id }).sort({ dateOfOrder: -1 }).exec();
@@ -255,12 +242,10 @@ exports.business_orders = async function (req, res) {
                 if (overdue > 0) { alerts.push(`You have ${overdue} orders overdue!`) }
                 res.render("business_orders", { user, orders, flash: '', alerts, total_orders });
             } else {
-                //code if no user with session email was found
                 res.redirect('/logout');
             };
         })
     }
-    // res.send({ email: session.email }); // fix me. redirect to protected business home page
     else
         res.render('business_signup', { flash: '' });
 }
@@ -740,7 +725,6 @@ exports.customer_home_signup = async function (req, res) {
             res.render('customer_login', { flash: 'An Account with this Email already exists! Please sign in.' });
             return err;
         } else {
-            //code if no user with entered email was found
             customer.save(function (err) {
                 if (err) {
                     return (err);
