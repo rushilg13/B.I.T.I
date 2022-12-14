@@ -27,7 +27,7 @@ exports.sendMail = function (req, res) {
     const mailData = {
         from: process.env.GMAIL_ID,
         to: req.body.email,
-        subject: 'Sending Email using Node.js',
+        subject: 'Greetings from B.I.T.I!',
         text: 'That was easy!',
         html: `<b>Hey there! </b><br> Greetings from B.I.T.I <br/> We are delighted to see that you want to expore more about our product. feel free to click the button below and sign up for free! <br><br><br><br><br> <a href="https://b-i-t-i.onrender.com/business_signup" style="text-decoration:none;
         width: 200px; padding: 15px; box-shadow: 6px 6px 5px; 
