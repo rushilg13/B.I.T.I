@@ -129,14 +129,15 @@ exports.business_home = function (req, res) {
 }
 
 
-exports.update_business_profile = function (req, res) {
+exports.update_business_profile = async function (req, res) {
     let session = req.session;
     if (session.email && session.type === "business") {
+        const hashedPassword = await bcrypt.hash(req.body.password, 10)
         let updatedProfile = {
             name: req.body.name,
             phone: req.body.phone,
             email: req.body.email,
-            password: req.body.password,
+            password: hashedPassword,
             address: req.body.address
         };
         shop_db.findByIdAndUpdate(req.body.id, updatedProfile, function (err, order) {
@@ -835,14 +836,15 @@ exports.customer_home = function (req, res) {
     }
 }
 
-exports.update_customer_profile = function (req, res) {
+exports.update_customer_profile = async function (req, res) {
     let session = req.session;
     if (session.email && session.type === "customer") {
+        const hashedPassword = await bcrypt.hash(req.body.password, 10)
         let updatedProfile = {
             name: req.body.name,
             phone: req.body.phone,
             email: req.body.email,
-            password: req.body.password,
+            password: hashedPassword,
             address: req.body.address
         };
         customer_db.findByIdAndUpdate(req.body.id, updatedProfile, function (err, order) {
