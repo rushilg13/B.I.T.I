@@ -272,10 +272,12 @@
                                 <h6 class="dropdown-header">
                                     Message Center
                                 </h6>
-                                <% if(total_orders == 1) {%>
+                                <% if(total_orders==1) {%>
                                     <a class="dropdown-item d-flex align-items-center" href="#">
                                         <div class="dropdown-list-image mr-3">
-                                            <img class="rounded-circle" style="object-fit: cover;" src="https://static.pexels.com/photos/324658/pexels-photo-324658.jpeg" alt="Official">
+                                            <img class="rounded-circle" style="object-fit: cover;"
+                                                src="https://static.pexels.com/photos/324658/pexels-photo-324658.jpeg"
+                                                alt="Official">
                                             <div class="status-indicator bg-success"></div>
                                         </div>
                                         <div class="font-weight-bold">
@@ -283,29 +285,33 @@
                                             <div class="small text-gray-500">Emily Fowler · 58m</div>
                                         </div>
                                     </a>
-                                <% } else if(total_orders <= 3) {%>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" style="object-fit: cover;" src="https://static.pexels.com/photos/324658/pexels-photo-324658.jpeg" alt="Official">
-                                        <div class="status-indicator bg-success"></div>
-                                    </div>
-                                    <div class="font-weight-bold">
-                                        <div class="text-truncate">Hi there new user!</div>
-                                        <div class="small text-gray-500">Emily Fowler · 58m</div>
-                                    </div>
-                                </a>
-                                <%} else { %>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="dropdown-list-image mr-3">
-                                            <img class="rounded-circle" style="object-fit: cover;" src="https://static.pexels.com/photos/324658/pexels-photo-324658.jpeg" alt="Official">
-                                            <div class="status-indicator bg-success"></div>
-                                        </div>
-                                        <div class="font-weight-bold">
-                                            <div class="text-truncate">Congratulations on your orders!</div>
-                                            <div class="small text-gray-500">Emily Fowler · 58m</div>
-                                        </div>
-                                    </a>
-                                <% } %>
+                                    <% } else if(total_orders <=3) {%>
+                                        <a class="dropdown-item d-flex align-items-center" href="#">
+                                            <div class="dropdown-list-image mr-3">
+                                                <img class="rounded-circle" style="object-fit: cover;"
+                                                    src="https://static.pexels.com/photos/324658/pexels-photo-324658.jpeg"
+                                                    alt="Official">
+                                                <div class="status-indicator bg-success"></div>
+                                            </div>
+                                            <div class="font-weight-bold">
+                                                <div class="text-truncate">Hi there new user!</div>
+                                                <div class="small text-gray-500">Emily Fowler · 58m</div>
+                                            </div>
+                                        </a>
+                                        <%} else { %>
+                                            <a class="dropdown-item d-flex align-items-center" href="#">
+                                                <div class="dropdown-list-image mr-3">
+                                                    <img class="rounded-circle" style="object-fit: cover;"
+                                                        src="https://static.pexels.com/photos/324658/pexels-photo-324658.jpeg"
+                                                        alt="Official">
+                                                    <div class="status-indicator bg-success"></div>
+                                                </div>
+                                                <div class="font-weight-bold">
+                                                    <div class="text-truncate">Congratulations on your orders!</div>
+                                                    <div class="small text-gray-500">Emily Fowler · 58m</div>
+                                                </div>
+                                            </a>
+                                            <% } %>
                             </div>
                         </li>
 
@@ -419,7 +425,8 @@
                                                                         <input type="hidden" class="form-control"
                                                                             value="<%= upcoming_orders[i]._id %>"
                                                                             name="id">
-                                                                        <button class="btn btn-danger"><i
+                                                                        <button onclick="return confirmDelete()"
+                                                                            class="btn btn-danger"><i
                                                                                 class="fa-solid fa-trash"></i>
                                                                             <span></span>
                                                                         </button>
@@ -511,7 +518,7 @@
                         </div>
                         <div class="form-group">
                             <label>Password</label>
-                            <input type="password" id="password" name="password" value="<%=user.password%>"
+                            <input type="password" id="password" name="password"  
                                 class="form-control" required>
                         </div>
                         <div class="form-group">
@@ -545,6 +552,12 @@
     <!-- Custom scripts for all pages-->
     <script src="js/admin.min.js"></script>
     <script>
+
+        function confirmDelete() {
+            var ans = confirm("Are you sure you want to delete this order?");
+            if (!ans) return false;
+        }
+
         function getRandomInt(min, max) {
             min = Math.ceil(min);
             max = Math.floor(max);
