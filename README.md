@@ -20,13 +20,13 @@ Template link
 
 Dependencies Used
 ------
+* ChartJS - Generate Graphs and Charts
 * bcryptjs - To hash passwords
 * express-session - To store session data
 * json2csv - generate CSVs
 * mongoose - Connect to MongoDB
 * nodemailer - Sending Mails
 * passport - Google OAuth
-* ChartJS - Generate Graphs and Charts
 * Bootstrap - Create Responsive Web Designs
 
 Left to Do
