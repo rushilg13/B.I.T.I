@@ -22,9 +22,9 @@ Dependencies Used
 ------
 * ChartJS - Generate Graphs and Charts
 * bcryptjs - To hash passwords
+* mongoose - Connect to MongoDB
 * express-session - To store session data
 * json2csv - generate CSVs
-* mongoose - Connect to MongoDB
 * nodemailer - Sending Mails
 * passport - Google OAuth
 * Bootstrap - Create Responsive Web Designs
