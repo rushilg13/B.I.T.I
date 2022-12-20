@@ -33,3 +33,8 @@ Left to Do
 ------
 - [ ] Implement a Search bar
 - [ ] Add Forgot Password
+
+Post Issues at
+-------
+!\[my badge\](https://badgen.net/badge/Open/issues/blue)
+
